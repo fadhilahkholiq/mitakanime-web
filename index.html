@@ -354,7 +354,7 @@
                 } else if (route === 'katalog') {
                     document.getElementById('view-katalog').classList.add('active');
                     headerTitle.innerHTML = 'mitaka<span class="text-white">nime</span>';
-                    updateSEO(`Daftar Anime - Halaman ${pageNum}`, 'Daftar lengkap anime tamat (Completed) yang bisa ditonton dan diunduh semua episodenya dengan subtitle Indonesia.');
+                    updateSEO(`Daftar Anime - Halaman ${pageNum}`, 'Daftar lengkap anime tamat (completed) yang bisa ditonton dan diunduh gratis semua episodenya dengan subtitle Indonesia.');
                     fetchKatalog(pageNum);
                 } else if (route === 'bookmark') {
                     document.getElementById('view-bookmark').classList.add('active');
@@ -371,7 +371,7 @@
                     document.getElementById('view-list').classList.add('active');
                     headerTitle.innerText = 'Home';
                     document.getElementById('list-title').innerHTML = `<svg class="w-5 h-5 text-brand drop-shadow-[0_0_5px_rgba(225,29,72,0.8)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path></svg> Anime <span class="text-white capitalize">Ongoing</span>`;
-                    updateSEO(`Anime Sedang Tayang - Halaman ${pageNum}`, 'Daftar anime ongoing subtitle Indonesia.');
+                    updateSEO(`Anime Sedang Tayang - Halaman ${pageNum}`, 'Daftar anime ongoing subtitle Indonesia yang rilis setiap minggunya di Mitaka.');
                     fetchList(`${BASE_URL}/ongoing-anime?page=${pageNum}`, `/ongoing`);
                 } else if (route === 'search' && paramId) {
                     document.getElementById('view-list').classList.add('active');
@@ -383,7 +383,7 @@
                     document.getElementById('view-list').classList.add('active');
                     headerTitle.innerText = 'Genre';
                     document.getElementById('list-title').innerHTML = `<svg class="w-5 h-5 text-brand inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg> Genre <span class="text-white capitalize">${paramId.replace('-', ' ')}</span>`;
-                    updateSEO(`Genre ${paramId} - Halaman ${pageNum}`, `Daftar anime dengan genre ${paramId}.`);
+                    updateSEO(`Genre ${paramId} - Halaman ${pageNum}`, `Daftar ratusan anime dengan genre ${paramId} yang siap download dan tonton di Mitaka.`);
                     fetchList(`${BASE_URL}/genre/${paramId}?page=${pageNum}`, `/genre/${paramId}`);
                 } else if (route === 'anime' && paramId) {
                     document.getElementById('view-detail').classList.add('active');
@@ -742,7 +742,7 @@
                 const animeResult = await animeRes.json();
                 const animePoster = animeResult.data.poster;
                 const animeTitle = animeResult.data.title; 
-                updateSEO(`Download ${ep.title}`, `Streaming dan Download ${ep.title} gratis di Mitaka Anime, kualitas 360p hingga 1080p sub Indo.`, animePoster);       
+                updateSEO(`Download ${ep.title}`, `Streaming dan download ${ep.title} gratis di Mitaka Anime, kualitas 360p hingga 1080p dengan sub Indo yang tertera.`, animePoster);       
                 let history = JSON.parse(localStorage.getItem('mitaka_history') || '[]');
                 const newHistory = { 
                     animeId: ep.animeId, 
