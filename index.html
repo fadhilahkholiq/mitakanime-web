@@ -188,7 +188,6 @@
             }
             localStorage.setItem('mitaka_bookmarks', JSON.stringify(bookmarks));
         };
-
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
@@ -368,7 +367,6 @@
                 document.getElementById('search-form').classList.replace('[@media(min-width:400px)]:flex', 'hidden');
                 document.getElementById('btn-search-mobile').classList.add('hidden');
                 document.getElementById('mobile-search-bar').classList.add('hidden');
-                
                 if (route === 'ongoing') {
                     document.getElementById('view-list').classList.add('active');
                     headerTitle.innerText = 'Home';
@@ -595,6 +593,21 @@
                 }
             } catch (e) { container.innerHTML = '<p class="text-red-500 text-sm col-span-2 text-center py-10">Terjadi kesalahan koneksi.</p>'; }
         }
+        window.fetchBookmarks = function() {
+            const container = document.getElementById('bookmark-container');
+            const bookmarks = JSON.parse(localStorage.getItem('mitaka_bookmarks') || '[]');
+            if (bookmarks.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-2 flex flex-col items-center justify-center py-16 text-gray-500 bg-black/20 rounded-2xl border border-white/5 shadow-inner">
+                        <svg class="w-20 h-20 mb-4 text-gray-600 drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                        <p class="text-sm font-bold text-gray-400">Bookmark masih kosong?</p>
+                        <p class="text-xs mt-1 text-center px-4">Tambah melalui halaman detail!</p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = bookmarks.map(a => createAnimeCard(a, true)).join('');
+            }
+        };
         async function fetchDetail(animeId) {
             const container = document.getElementById('detail-container');
             container.innerHTML = `
