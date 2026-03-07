@@ -60,7 +60,7 @@
         </div>
         <p class="text-gray-400 mt-6 text-xs font-medium tracking-widest uppercase animate-pulse">Tonton 19 Juta Anime Gratis di Mitaka!</p>
     </div>
-    <div class="max-w-md mx-auto bg-gradient-to-br from-gray-900 via-dark to-black min-h-screen relative shadow-[0_0_50px_rgba(225,29,72,0.1)] flex flex-col overflow-x-hidden no-scrollbar">
+    <div class="max-w-md mx-auto bg-gradient-to-br from-gray-900 via-dark to-black min-h-screen relative shadow-[0_0_50px_rgba(225,29,72,0.1)] flex flex-col no-scrollbar">
         <header class="fixed top-0 w-full max-w-md z-30 bg-dark p-4 flex items-center justify-between border-b border-white/5 h-16 shadow-md">
             <div class="flex items-center gap-3">
                 <button id="btn-back" onclick="history.back()" class="hidden text-gray-300 hover:text-white bg-white/5 p-2 rounded-full transition-all active:scale-90">
@@ -694,23 +694,25 @@
                             ${group.startWith}
                         </button>
                     `).join('');
-                    container.innerHTML = result.data.list.map(group => `
-                        <div id="az-group-${group.startWith === '#' ? 'simbol' : group.startWith}" class="scroll-mt-20">
-                            <div class="sticky top-16 z-10 bg-dark/95 backdrop-blur-md py-2 border-b border-brand/20 mb-3 -mx-2 px-2 shadow-[0_10px_10px_-10px_rgba(0,0,0,0.5)]">
-                                <h3 class="text-xl font-bold text-brand drop-shadow-[0_0_8px_rgba(225,29,72,0.5)] flex items-center gap-2">
+                    container.innerHTML = result.data.list.map(group => {
+                        const groupId = group.startWith === '#' ? 'simbol' : group.startWith;
+                        return `
+                        <div id="az-group-${groupId}" class="scroll-mt-16 mb-10">
+                            <div class="sticky top-16 z-20 bg-dark/95 backdrop-blur-md py-3 border-y border-white/5 mb-4 -mx-5 px-5 shadow-sm">
+                                <h3 class="text-lg font-bold text-brand drop-shadow-md flex items-center gap-2">
                                     <span class="bg-brand/10 w-8 h-8 rounded-lg flex items-center justify-center border border-brand/20">${group.startWith}</span>
                                 </h3>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 ${group.animeList.map(a => `
-                                    <a href="/anime/${a.animeId}" class="bg-card/60 backdrop-blur-sm border border-white/5 p-3.5 rounded-xl flex items-center text-xs font-medium text-gray-300 hover:text-white hover:bg-brand/20 hover:border-brand transition-all duration-300 active:scale-[0.98] group shadow-sm hover:shadow-[0_5px_15px_rgba(225,29,72,0.15)]">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-brand mr-3 shrink-0 transition-colors shadow-[0_0_5px_rgba(0,0,0,0)] group-hover:shadow-[0_0_8px_rgba(225,29,72,0.8)]"></span>
-                                        <span class="truncate line-clamp-1">${a.title}</span>
+                                    <a href="/anime/${a.animeId}" class="bg-card/60 backdrop-blur-sm border border-white/5 p-3.5 rounded-xl flex items-start gap-3 text-xs font-medium text-gray-300 hover:text-white hover:bg-brand/10 hover:border-brand transition-all duration-300 active:scale-[0.98] group shadow-sm hover:shadow-[0_5px_15px_rgba(225,29,72,0.15)]">
+                                        <div class="mt-1 w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-brand shrink-0 transition-colors shadow-[0_0_5px_rgba(0,0,0,0)] group-hover:shadow-[0_0_8px_rgba(225,29,72,0.8)]"></div>
+                                        <span class="line-clamp-2 leading-relaxed">${a.title}</span>
                                     </a>
                                 `).join('')}
                             </div>
                         </div>
-                    `).join('');
+                    `}).join('');
                 }
             } catch (e) {
                 container.innerHTML = '<p class="text-red-500 text-sm text-center bg-red-500/10 p-4 rounded-2xl border border-red-500/20">Gagal memuat direktori A-Z.</p>';
