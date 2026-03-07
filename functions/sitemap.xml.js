@@ -3,7 +3,7 @@ export async function onRequest({ request }) {
     const baseUrl = url.origin; 
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
     xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-    const staticPages = ['/home', '/jadwal', '/katalog', '/genre'];
+    const staticPages = ['/home', '/ongoing', '/jadwal', '/katalog', '/genre'];
     for (const page of staticPages) {
         xml += `  <url>\n`;
         xml += `    <loc>${baseUrl}${page}</loc>\n`;
@@ -35,7 +35,7 @@ export async function onRequest({ request }) {
     xml += `</urlset>`;
     return new Response(xml, {
         headers: {
-            'content-type': 'application/xml;charset=UTF-8',
+            'Content-Type': 'application/xml;charset=UTF-8',
             'Cache-Control': 'public, max-age=43200' 
         },
     });
