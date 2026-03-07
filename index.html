@@ -1060,11 +1060,11 @@
                                     <span>Pilih Server & Resolusi</span>
                                     <button onclick="toggleServerModal()" class="text-gray-400 hover:text-white p-1 rounded-full bg-white/5"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
                                 </h3>
-                                <div class="overflow-y-auto no-scrollbar space-y-4 pb-4">
+                                <div class="overflow-y-auto no-scrollbar space-y-4 pb-4 mb-2">
                                     ${ep.server.qualities.map(q => `
                                         <div>
                                             <h4 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">${q.title}</h4>
-                                            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px;" class="mb-5">
+                                            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px;">
                                                 ${q.serverList.map(srv => `
                                                     <button onclick="changeServerChip(this, '${srv.serverId}')" class="server-chip bg-card/80 border border-white/5 text-gray-300 hover:text-white hover:border-brand/50 hover:bg-brand/10 text-[11px] font-medium py-3 px-3 rounded-xl transition-all active:scale-95 text-left truncate uppercase">
                                                         ${srv.title.trim()}
@@ -1126,7 +1126,7 @@
                         <div class="relative z-10 mt-4 bg-black/20 p-4 rounded-2xl border border-white/5 shadow-inner">
                             <h3 class="text-xs font-bold text-gray-400 mb-4 uppercase tracking-widest flex items-center gap-2">
                                 <svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg> 
-                                Link Unduhan
+                                Link Download
                             </h3>
                             <div class="flex flex-col gap-3">
                                 ${ep.downloadUrl.qualities.map(q => `
