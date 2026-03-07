@@ -1089,7 +1089,7 @@
                 }
 
                 // ==========================================
-                // 3. GRID MINIMALIS (PERBAIKAN STRUKTUR CSS GRID)
+                // 3. GRID MINIMALIS (OVERRIDE CSS MUTLAK)
                 // ==========================================
                 let allEpisodesHTML = '';
                 if (ep.info && ep.info.episodeList && ep.info.episodeList.length > 0) {
@@ -1105,7 +1105,7 @@
                                 </a>
                             </div>
                             
-                            <div class="grid grid-cols-5 gap-2.5 max-h-48 overflow-y-auto no-scrollbar pr-1">
+                            <div class="max-h-48 overflow-y-auto no-scrollbar pr-1" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px;">
                                 ${ep.info.episodeList.map(episode => {
                                     
                                     let displayNum = "SP";
@@ -1116,12 +1116,11 @@
                                     
                                     const isActive = episode.episodeId === episodeId;
                                     
-                                    // CSS Grid akan memastikan setiap elemen <a> ini memiliki proporsi lebar yang sama
-                                    return `
-                                    <a href="/episode/${episode.episodeId}" class="col-span-1 flex flex-col items-center justify-center py-2.5 rounded-xl text-xs font-bold transition-all active:scale-90 ${isActive ? 'bg-brand text-white shadow-[0_0_15px_rgba(225,29,72,0.6)] animate-pulse' : 'bg-card/80 border border-white/5 text-gray-300 hover:text-white hover:border-brand/50 hover:bg-white/10'}">
-                                        ${displayNum}
+                                    return \`
+                                    <a href="/episode/\${episode.episodeId}" class="flex flex-col items-center justify-center py-2.5 rounded-xl text-xs font-bold transition-all active:scale-90 \${isActive ? 'bg-brand text-white shadow-[0_0_15px_rgba(225,29,72,0.6)] animate-pulse' : 'bg-card/80 border border-white/5 text-gray-300 hover:text-white hover:border-brand/50 hover:bg-white/10'}">
+                                        \${displayNum}
                                     </a>
-                                    `;
+                                    \`;
                                 }).join('')}
                             </div>
                         </div>
