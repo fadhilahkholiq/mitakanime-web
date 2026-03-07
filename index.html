@@ -1169,7 +1169,14 @@
                         </div>
                         <div class="relative z-10 pt-6 px-5 mt-4">
                             <h2 class="text-base font-bold text-white leading-tight drop-shadow-md">${animeTitle}</h2>
-                            <h3 class="text-xs text-brand font-bold tracking-widest uppercase mt-1 opacity-90">${currentEpisodeLabel}</h3>
+                            <div class="flex items-center gap-2 mt-1.5">
+                                <h3 class="text-xs text-brand font-bold tracking-widest uppercase opacity-90">${currentEpisodeLabel}</h3>
+                                
+                                <span class="flex items-center gap-1.5 bg-brand/20 border border-brand/40 px-2 py-0.5 rounded-full animate-pulse shadow-[0_0_10px_rgba(225,29,72,0.2)]">
+                                    <span class="w-1.5 h-1.5 bg-brand rounded-full"></span>
+                                    <span class="text-[9px] font-bold text-brand uppercase tracking-wider">Now Playing</span>
+                                </span>
+                            </div>
                         </div>
                         <div id="video-section-container" class="relative pt-4 px-4 pb-4 transition-all duration-500 rounded-b-[24px]">
                             <div id="video-wrapper" class="relative w-full aspect-video rounded-[14px] ring-1 ring-white/10 overflow-hidden bg-black group cursor-pointer shadow-lg" onclick="playVideo('${ep.defaultStreamingUrl}')">
