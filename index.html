@@ -967,6 +967,8 @@
                             }
                             return '';
                         })() : ''}
+                        <h3 class="font-bold mt-8 mb-3 border-l-4 border-brand pl-3 text-white text-lg">Sinopsis</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed opacity-90">${anime.synopsis.paragraphs.join('<br/><br/>') || 'Sinopsis belum ditambahkan.'}</p>
                         <h3 class="font-bold mt-10 mb-4 border-l-4 border-brand pl-3 text-white text-lg">Daftar Episode</h3>
                         <div class="grid grid-cols-2 gap-2.5">
                             ${anime.episodeList.map(eps => {
