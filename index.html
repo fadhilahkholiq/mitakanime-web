@@ -1304,11 +1304,17 @@
                 if (loadingIndicator) loadingIndicator.classList.add('hidden');
             }
         };
+        // ==========================================
+        // FUNGSI UI/UX HALAMAN NONTON 
+        // ==========================================
+
+        // 1. Fungsi Laci Menu Server (Bottom Sheet)
         window.toggleServerModal = function() {
             const modal = document.getElementById('server-modal');
             const sheet = document.getElementById('server-sheet');
             const backdrop = document.getElementById('server-backdrop');
             if (!modal) return;
+            
             if (modal.classList.contains('hidden')) {
                 modal.classList.remove('hidden');
                 setTimeout(() => {
@@ -1323,21 +1329,29 @@
                 }, 300);
             }
         };
+
+        // 2. Fungsi Eksekusi Ganti Server (Diperbarui)
         window.changeServerChip = async function(btn, serverId) {
             if (!serverId) return;
+            
+            // Ubah gaya tombol yang dipilih di dalam Laci Server
             document.querySelectorAll('.server-chip').forEach(el => {
                 el.classList.remove('bg-brand/20', 'border-brand', 'text-white', 'ring-1', 'ring-brand');
                 el.classList.add('bg-card/80', 'border-white/5', 'text-gray-300');
                 const check = el.querySelector('.check-icon');
                 if(check) check.classList.add('opacity-0');
             });
+            
             btn.classList.remove('bg-card/80', 'border-white/5', 'text-gray-300');
             btn.classList.add('bg-brand/20', 'border-brand', 'text-white', 'ring-1', 'ring-brand');
             const check = btn.querySelector('.check-icon');
             if(check) check.classList.remove('opacity-0');
+
             const wrapper = document.getElementById('video-wrapper');
             const loadingIndicator = document.getElementById('server-loading');   
+            
             if (loadingIndicator) loadingIndicator.classList.remove('hidden');
+            
             try {
                 const res = await fetch(`${BASE_URL}/server/${serverId}`);
                 const result = await res.json();
@@ -1346,6 +1360,8 @@
                     wrapper.innerHTML = `<iframe src="${realUrl}" class="absolute inset-0 w-full h-full z-10 rounded-xl" allowfullscreen allow="autoplay"></iframe>`;
                     wrapper.onclick = null;
                     wrapper.classList.remove('cursor-pointer');
+                    
+                    // Tutup Laci Otomatis setelah server dipilih
                     toggleServerModal();
                 } else {
                     throw new Error("URL Kosong");
@@ -1354,38 +1370,6 @@
                 showToast("Gagal menghubungkan ke server.", "error");
             } finally {
                 if (loadingIndicator) loadingIndicator.classList.add('hidden');
-            }
-        };
-        window.toggleLights = function() {
-            let overlay = document.getElementById('lights-overlay');
-            const icon = document.getElementById('icon-lights');
-            const text = document.getElementById('text-lights');
-            const videoContainer = document.getElementById('video-section-container');
-            
-            if (!overlay) {
-                overlay = document.createElement('div');
-                overlay.id = 'lights-overlay';
-                overlay.className = 'fixed inset-0 bg-black z-[40] opacity-0 transition-opacity duration-500 pointer-events-none';
-                document.body.appendChild(overlay);
-            }
-            if (overlay.classList.contains('opacity-0')) {
-                overlay.classList.remove('opacity-0', 'pointer-events-none');
-                overlay.classList.add('opacity-95', 'pointer-events-auto');
-                videoContainer.classList.add('relative', 'z-[50]'); 
-                
-                icon.classList.replace('text-gray-400', 'text-yellow-400');
-                icon.setAttribute('fill', 'currentColor');
-                text.classList.replace('text-gray-400', 'text-yellow-400');
-                
-                overlay.onclick = toggleLights;
-            } else {
-                overlay.classList.replace('opacity-95', 'opacity-0');
-                overlay.classList.replace('pointer-events-auto', 'pointer-events-none');
-                setTimeout(() => videoContainer.classList.remove('relative', 'z-[50]'), 500); 
-                
-                icon.classList.replace('text-yellow-400', 'text-gray-400');
-                icon.setAttribute('fill', 'none');
-                text.classList.replace('text-yellow-400', 'text-gray-400');
             }
         };
         window.shareEpisode = async function(title) {
