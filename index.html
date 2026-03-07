@@ -727,7 +727,7 @@
                         <div id="az-group-${groupId}" class="scroll-mt-20" style="margin-bottom: 40px;">
                             <div class="sticky z-20 flex items-center justify-between bg-black/90 backdrop-blur-xl border-y border-white/10 shadow-lg" style="top: 64px; margin-bottom: 24px; margin-left: -20px; margin-right: -20px; padding-left: 20px; padding-right: 20px; padding-top: 12px; padding-bottom: 12px;">
                                 <div class="flex items-center gap-3">
-                                    <span class="bg-brand rounded-full shadow-[0_0_10px_rgba(225,29,72,0.8)]" style="width: 6px; height: 24px;"></span>
+                                    <span class="bg-brand shadow-[0_0_10px_rgba(225,29,72,0.8)]" style="width: 6px; height: 24px;"></span>
                                     <h3 class="text-2xl font-black text-white drop-shadow-md">${group.startWith}</h3>
                                 </div>
                                 <span class="text-[10px] font-bold text-brand uppercase tracking-widest bg-brand/10 px-3 py-1.5 rounded-lg border border-brand/20 shadow-inner">
@@ -915,8 +915,8 @@
                     <div class="p-5 pt-5 relative z-10">
                         <div class="flex justify-between items-start gap-3">
                             <div class="flex-1 min-w-0">
-                                <h2 class="text-xl font-bold text-white leading-tight drop-shadow-md">${anime.title}</h2>
-                                <p class="text-xs text-gray-400 mt-1">Subtitle Indonesia</p>
+                                <h2 class="text-base font-bold text-white leading-tight drop-shadow-md">${anime.title}</h2>
+                                <p class="text-xs text-brand font-bold tracking-widest uppercase mt-1 opacity-90">Subtitle Indonesia</p>
                             </div>  
                             <button onclick="toggleBookmark('${animeId}', '${anime.title.replace(/'/g, "\\'")}', '${anime.poster}', '${anime.score || ''}')" class="shrink-0 bg-card/80 backdrop-blur border border-white/10 p-3 rounded-full shadow-lg active:scale-90 transition-transform group">
                                 <svg id="icon-bookmark" class="w-6 h-6 ${isBookmarked ? 'text-brand fill-brand' : 'text-gray-400 group-hover:text-white'}" fill="${isBookmarked ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
@@ -1007,23 +1007,14 @@
                 const animeResult = await animeRes.json();
                 const animePoster = animeResult.data.poster;
                 const animeTitle = animeResult.data.title; 
-                
-                updateSEO(`Nonton ${ep.title}`, `Streaming dan download ${ep.title} gratis di Mitaka Anime, kualitas 360p hingga 1080p dengan sub Indo.`, animePoster);       
-                
-                // Simpan History
+                updateSEO(`Download ${ep.title}`, `Streaming dan download ${ep.title} gratis di Mitaka Anime, kualitas 360p hingga 1080p dengan sub Indo/Indonesia.`, animePoster); 
                 let history = JSON.parse(localStorage.getItem('mitaka_history') || '[]');
                 const newHistory = { animeId: ep.animeId, title: animeTitle, poster: animePoster, episodeId: episodeId, epsTitle: ep.title };
                 history = history.filter(h => h.animeId !== ep.animeId); 
                 history.unshift(newHistory); 
                 localStorage.setItem('mitaka_history', JSON.stringify(history.slice(0, 5)));
-
-                // Cek status Bookmark
                 const bookmarks = JSON.parse(localStorage.getItem('mitaka_bookmarks') || '[]');
                 const isBookmarked = bookmarks.some(b => b.animeId === ep.animeId);
-
-                // ==========================================
-                // EKSTRAKSI LABEL EPISODE BERSIIIH
-                // ==========================================
                 let currentEpisodeLabel = "Episode Spesial";
                 const titleMatch = ep.title.match(/(Episode|Eps|OVA|OAD|Movie)\s?\d+(\.\d+)?/i);
                 if (titleMatch) {
@@ -1033,10 +1024,6 @@
                 } else if (ep.title.toLowerCase().includes('ova')) {
                     currentEpisodeLabel = "OVA";
                 }
-
-                // ==========================================
-                // 1. BARIS AKSI (NATIVE STYLE)
-                // ==========================================
                 const actionRowHTML = `
                     <div class="grid grid-cols-3 gap-2.5 mt-4">
                         <button onclick="toggleBookmark('${ep.animeId}', '${animeTitle.replace(/'/g, "\\'")}', '${animePoster}', '')" class="bg-card/80 hover:bg-white/10 border border-white/5 p-2.5 rounded-xl flex flex-col items-center justify-center gap-1.5 transition-all shadow-sm active:scale-95 group">
@@ -1053,10 +1040,6 @@
                         </button>
                     </div>
                 `;
-
-                // ==========================================
-                // 2. SERVER CHIPS (NATIVE STYLE)
-                // ==========================================
                 let serverSection = '';
                 let serverLoading = '';
                 if (ep.server && ep.server.qualities && ep.server.qualities.length > 0) {
@@ -1071,7 +1054,7 @@
                                 <div class="flex overflow-x-auto gap-2 pb-2 no-scrollbar snap-x snap-mandatory">
                                     ${validQualities.map(q => 
                                         q.serverList.map(srv => `
-                                            <button onclick="changeServerChip(this, '${srv.serverId}')" class="server-chip flex-shrink-0 snap-start bg-card/80 border border-white/5 hover:border-brand/50 text-gray-400 hover:text-white text-[11px] font-medium py-2 px-4 rounded-xl transition-all whitespace-nowrap active:scale-95 shadow-sm">
+                                            <button onclick="changeServerChip(this, '${srv.serverId}')" class="server-chip flex-shrink-0 snap-start bg-card/80 border border-white/5 hover:border-brand/50 text-gray-400 hover:text-white text-[11px] font-medium py-2 px-4 rounded-xl transition-all whitespace-nowrap active:scale-95 shadow-sm uppercase">
                                                 <span class="text-white font-bold mr-1 drop-shadow-md">${q.title}</span> <span class="opacity-70">${srv.title.trim()}</span>
                                             </button>
                                         `).join('')
@@ -1087,23 +1070,17 @@
                         `;
                     }
                 }
-
-                // Navigasi Next/Prev
                 let navButtons = '';
                 if (ep.hasPrevEpisode && ep.prevEpisode) {
-                    navButtons += `<a href="/episode/${ep.prevEpisode.episodeId}" class="bg-card/80 hover:bg-white/10 text-white text-[10px] font-medium py-3 px-3 rounded-xl transition-all border border-white/5 flex items-center justify-center gap-1.5 shadow-sm flex-1 active:scale-95"><svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg><span>Prev</span></a>`;
+                    navButtons += `<a href="/episode/${ep.prevEpisode.episodeId}" class="bg-card/80 hover:bg-white/10 text-white text-[10px] font-medium py-3 px-3 rounded-xl transition-all border border-white/5 flex items-center justify-center gap-1.5 shadow-sm flex-1 active:scale-95"><svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg><span>Previous Episode</span></a>`;
                 } else {
-                    navButtons += `<button disabled class="bg-card/30 text-gray-600 text-[10px] font-medium py-3 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-not-allowed border border-transparent flex-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg><span>Prev</span></button>`;
+                    navButtons += `<button disabled class="bg-card/30 text-gray-600 text-[10px] font-medium py-3 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-not-allowed border border-transparent flex-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg><span>Previous Episode</span></button>`;
                 }
                 if (ep.hasNextEpisode && ep.nextEpisode) {
-                    navButtons += `<a href="/episode/${ep.nextEpisode.episodeId}" class="bg-brand hover:bg-brand/80 text-white text-[10px] font-bold py-3 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-[0_0_15px_rgba(225,29,72,0.4)] flex-1 active:scale-95 tracking-wide"><span>Next</span><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>`;
+                    navButtons += `<a href="/episode/${ep.nextEpisode.episodeId}" class="bg-brand hover:bg-brand/80 text-white text-[10px] font-bold py-3 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-[0_0_15px_rgba(225,29,72,0.4)] flex-1 active:scale-95 tracking-wide"><span>Next Episode</span><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>`;
                 } else {
-                    navButtons += `<button disabled class="bg-card/30 text-gray-600 text-[10px] font-medium py-3 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-not-allowed border border-transparent flex-1"><span>Next</span><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>`;
+                    navButtons += `<button disabled class="bg-card/30 text-gray-600 text-[10px] font-medium py-3 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-not-allowed border border-transparent flex-1"><span>Next Episode</span><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>`;
                 }
-
-                // ==========================================
-                // 3. GRID MINIMALIS (SINTAKSIS BERSIH)
-                // ==========================================
                 let allEpisodesHTML = '';
                 if (ep.info && ep.info.episodeList && ep.info.episodeList.length > 0) {
                     allEpisodesHTML = `
@@ -1117,7 +1094,6 @@
                                     Detail Anime <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                                 </a>
                             </div>
-                            
                             <div class="max-h-48 overflow-y-auto no-scrollbar pr-1" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px;">
                                 ${ep.info.episodeList.map(episode => {
                                     let displayNum = "SP";
@@ -1126,8 +1102,6 @@
                                         displayNum = match[0].replace(/Episode\s?|Eps\s?/i, '');
                                     }
                                     const isActive = episode.episodeId === episodeId;
-                                    
-                                    // Kode bersih tanpa backslash yang menyebabkan error syntax!
                                     return `
                                     <a href="/episode/${episode.episodeId}" class="flex flex-col items-center justify-center py-2.5 rounded-xl text-xs font-bold transition-all active:scale-90 ${isActive ? 'bg-brand text-white shadow-[0_0_15px_rgba(225,29,72,0.6)] animate-pulse' : 'bg-card/80 border border-white/5 text-gray-300 hover:text-white hover:border-brand/50 hover:bg-white/10'}">
                                         ${displayNum}
@@ -1138,8 +1112,6 @@
                         </div>
                     `;
                 }
-
-                // Link Download
                 let downloadHTML = '';
                 if (ep.downloadUrl && ep.downloadUrl.qualities && ep.downloadUrl.qualities.length > 0) {
                     downloadHTML = `
@@ -1166,8 +1138,6 @@
                         </div>
                     `;
                 }
-
-                // Render Seluruh Kontainer
                 container.innerHTML = `
                     <div class="relative w-full">
                         <div class="absolute top-0 left-0 right-0 h-[300px] z-0 pointer-events-none [-webkit-mask-image:linear-gradient(to_top,transparent_0%,black_100%)] [mask-image:linear-gradient(to_top,transparent_0%,black_100%)]">
@@ -1187,9 +1157,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
                             ${actionRowHTML}
-                            
                             <div class="mt-4 bg-black/20 rounded-2xl p-3 border border-white/5 shadow-inner">
                                 ${serverSection}
                                 ${serverLoading}
@@ -1198,9 +1166,7 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="relative z-10 pb-6 px-5">
-                            
                             ${allEpisodesHTML}
                             ${downloadHTML}
                         </div>
@@ -1305,8 +1271,8 @@
                     <div class="p-5 pt-5 relative z-10">
                         <div class="flex justify-between items-start gap-3">
                             <div class="flex-1 min-w-0">
-                                <h2 class="text-xl font-bold text-white leading-tight drop-shadow-md">${ep.title.replace(/\s*\[BATCH\]\s*/gi, '').trim()}</h2>
-                                <p class="text-xs text-gray-400 mt-1">Subtitle Indonesia</p>
+                                <h2 class="text-base font-bold text-white leading-tight drop-shadow-md">${ep.title.replace(/\s*\[BATCH\]\s*/gi, '').trim()}</h2>
+                                <p class="text-xs text-brand font-bold tracking-widest uppercase mt-1 opacity-90">Subtitle Indonesia</p>
                             </div>
                         </div>
                         ${extraInfoHTML}
@@ -1356,29 +1322,17 @@
                 if (loadingIndicator) loadingIndicator.classList.add('hidden');
             }
         };
-        // ==========================================
-        // FUNGSI UI/UX HALAMAN NONTON (BILIBILI STYLE)
-        // ==========================================
-
-        // 1. Fungsi Ganti Server (Model Pil/Chip Geser)
         window.changeServerChip = async function(btn, serverId) {
             if (!serverId) return;
-            
-            // Matikan warna aktif di semua tombol server
             document.querySelectorAll('.server-chip').forEach(el => {
                 el.classList.remove('bg-brand/20', 'border-brand', 'text-white', 'ring-1', 'ring-brand');
                 el.classList.add('bg-card', 'border-white/10', 'text-gray-400');
             });
-            
-            // Nyalakan warna merah pada tombol yang diklik
             btn.classList.remove('bg-card', 'border-white/10', 'text-gray-400');
             btn.classList.add('bg-brand/20', 'border-brand', 'text-white', 'ring-1', 'ring-brand');
-
             const wrapper = document.getElementById('video-wrapper');
             const loadingIndicator = document.getElementById('server-loading');   
-            
             if (loadingIndicator) loadingIndicator.classList.remove('hidden');
-            
             try {
                 const res = await fetch(`${BASE_URL}/server/${serverId}`);
                 const result = await res.json();
@@ -1397,49 +1351,36 @@
                 if (loadingIndicator) loadingIndicator.classList.add('hidden');
             }
         };
-
-        // 2. Fungsi Mode Bioskop (Lights Off)
         window.toggleLights = function() {
             let overlay = document.getElementById('lights-overlay');
             const icon = document.getElementById('icon-lights');
             const text = document.getElementById('text-lights');
             const videoContainer = document.getElementById('video-section-container');
-            
-            // Buat kain hitam jika belum ada
             if (!overlay) {
                 overlay = document.createElement('div');
                 overlay.id = 'lights-overlay';
                 overlay.className = 'fixed inset-0 bg-black z-[40] opacity-0 transition-opacity duration-500 pointer-events-none';
                 document.body.appendChild(overlay);
             }
-
             if (overlay.classList.contains('opacity-0')) {
-                // MATIKAN LAMPU (Gelap)
                 overlay.classList.remove('opacity-0', 'pointer-events-none');
                 overlay.classList.add('opacity-95', 'pointer-events-auto');
-                videoContainer.classList.add('relative', 'z-[50]'); // Angkat video ke atas kain hitam
-                
+                videoContainer.classList.add('relative', 'z-[50]');
                 icon.classList.replace('text-gray-400', 'text-yellow-400');
                 icon.setAttribute('fill', 'currentColor');
                 text.classList.replace('text-gray-400', 'text-yellow-400');
                 text.innerText = "Nyala";
-                
-                // Klik sembarang di area gelap untuk menyalakan lampu lagi
                 overlay.onclick = toggleLights;
             } else {
-                // NYALAKAN LAMPU (Terang)
                 overlay.classList.replace('opacity-95', 'opacity-0');
                 overlay.classList.replace('pointer-events-auto', 'pointer-events-none');
                 setTimeout(() => videoContainer.classList.remove('relative', 'z-[50]'), 500); 
-                
                 icon.classList.replace('text-yellow-400', 'text-gray-400');
                 icon.setAttribute('fill', 'none');
                 text.classList.replace('text-yellow-400', 'text-gray-400');
                 text.innerText = "Fokus";
             }
         };
-
-        // 3. Fungsi Bagikan (Share Native API)
         window.shareEpisode = async function(title) {
             const url = window.location.href;
             if (navigator.share) {
@@ -1451,7 +1392,6 @@
                     });
                 } catch (err) { console.log('Share dibatalkan'); }
             } else {
-                // Jika browser jadul, copy link ke clipboard
                 navigator.clipboard.writeText(url);
                 showToast("Link berhasil disalin!", "success");
             }
