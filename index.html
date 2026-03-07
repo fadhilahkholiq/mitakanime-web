@@ -1022,6 +1022,19 @@
                 const isBookmarked = bookmarks.some(b => b.animeId === ep.animeId);
 
                 // ==========================================
+                // EKSTRAKSI LABEL EPISODE BERSIIIH
+                // ==========================================
+                let currentEpisodeLabel = "Episode Spesial";
+                const titleMatch = ep.title.match(/(Episode|Eps|OVA|OAD|Movie)\s?\d+(\.\d+)?/i);
+                if (titleMatch) {
+                    currentEpisodeLabel = titleMatch[0]; // Misal: "Episode 12"
+                } else if (ep.title.toLowerCase().includes('movie')) {
+                    currentEpisodeLabel = "Movie";
+                } else if (ep.title.toLowerCase().includes('ova')) {
+                    currentEpisodeLabel = "OVA";
+                }
+
+                // ==========================================
                 // 1. BARIS AKSI (NATIVE STYLE)
                 // ==========================================
                 const actionRowHTML = `
@@ -1075,7 +1088,7 @@
                     }
                 }
 
-                // Navigasi Next/Prev (Blend Style)
+                // Navigasi Next/Prev
                 let navButtons = '';
                 if (ep.hasPrevEpisode && ep.prevEpisode) {
                     navButtons += `<a href="/episode/${ep.prevEpisode.episodeId}" class="bg-card/80 hover:bg-white/10 text-white text-[10px] font-medium py-3 px-3 rounded-xl transition-all border border-white/5 flex items-center justify-center gap-1.5 shadow-sm flex-1 active:scale-95"><svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg><span>Prev</span></a>`;
@@ -1089,7 +1102,7 @@
                 }
 
                 // ==========================================
-                // 3. GRID MINIMALIS & INLINE CSS
+                // 3. GRID MINIMALIS (SINTAKSIS BERSIH)
                 // ==========================================
                 let allEpisodesHTML = '';
                 if (ep.info && ep.info.episodeList && ep.info.episodeList.length > 0) {
@@ -1107,15 +1120,14 @@
                             
                             <div class="max-h-48 overflow-y-auto no-scrollbar pr-1" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px;">
                                 ${ep.info.episodeList.map(episode => {
-                                    
                                     let displayNum = "SP";
                                     const match = episode.title.match(/(Episode|Eps|OVA|OAD|Movie)\s?\d+(\.\d+)?/i);
                                     if (match) {
                                         displayNum = match[0].replace(/Episode\s?|Eps\s?/i, '');
                                     }
-                                    
                                     const isActive = episode.episodeId === episodeId;
                                     
+                                    // Kode bersih tanpa backslash yang menyebabkan error syntax!
                                     return `
                                     <a href="/episode/${episode.episodeId}" class="flex flex-col items-center justify-center py-2.5 rounded-xl text-xs font-bold transition-all active:scale-90 ${isActive ? 'bg-brand text-white shadow-[0_0_15px_rgba(225,29,72,0.6)] animate-pulse' : 'bg-card/80 border border-white/5 text-gray-300 hover:text-white hover:border-brand/50 hover:bg-white/10'}">
                                         ${displayNum}
@@ -1185,8 +1197,8 @@
                         </div>
 
                         <div class="relative z-10 pt-2 pb-6 px-5">
-                            <h2 class="text-lg font-bold text-white leading-snug drop-shadow-md mb-1">${ep.title}</h2>
-                            <h3 class="text-xs text-brand font-medium tracking-wide mb-4 line-clamp-1">${animeTitle}</h3>
+                            <h2 class="text-base font-bold text-white leading-snug drop-shadow-md mb-1">${animeTitle}</h2>
+                            <h3 class="text-xs text-brand font-medium tracking-wide mb-4 line-clamp-1">${currentEpisodeLabel}</h3>
                             
                             ${allEpisodesHTML}
                             ${downloadHTML}
