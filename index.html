@@ -1052,41 +1052,39 @@
                 let serverModalHTML = '';
                 if (ep.server && ep.server.qualities && ep.server.qualities.length > 0) {
                     serverModalHTML = `
-                        <div id="server-modal" class="fixed inset-0 z-[100] hidden flex flex-col justify-end">
-                            <div id="server-backdrop" class="absolute inset-0 bg-black/85 backdrop-blur-sm transition-opacity duration-300 opacity-0" onclick="toggleServerModal()"></div>
-                            <div id="server-sheet" class="relative bg-[#0d1221] border-t-2 border-brand/50 rounded-t-[30px] p-6 pt-5 transform translate-y-full transition-transform duration-300 w-full max-w-lg mx-auto max-h-[75vh] flex flex-col shadow-[0_-15px_60px_rgba(0,0,0,0.8)] pointer-events-auto">
-                                <div class="w-16 h-1.5 bg-white/10 rounded-full mx-auto mb-5 shrink-0 hover:bg-white/20 transition-colors"></div>
-                                <div class="flex justify-between items-center mb-6 shrink-0 pb-3 border-b border-white/5">
-                                    <h3 class="text-white font-extrabold text-lg flex items-center gap-2.5 tracking-tight drop-shadow-[0_2px_5px_rgba(0,0,0,0.5)]">
+                        <div id="server-modal" class="fixed inset-0 z-[100] hidden flex flex-col justify-end items-center pointer-events-none">
+                            <div id="server-backdrop" class="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-300 opacity-0 pointer-events-auto" onclick="toggleServerModal()"></div> 
+                            <div id="server-sheet" class="relative border-t border-brand/50 rounded-t-[28px] p-6 pt-5 transform translate-y-full transition-transform duration-300 w-full max-w-md flex flex-col shadow-[0_-15px_50px_rgba(0,0,0,0.9)] pointer-events-auto" style="background-color: #0a0f1c;">
+                                <div class="w-12 h-1.5 bg-white/20 rounded-full mx-auto mb-5 shrink-0"></div>
+                                <div class="flex justify-between items-center mb-6 shrink-0 pb-3 border-b border-white/10">
+                                    <h3 class="text-white font-extrabold text-base flex items-center gap-2 drop-shadow-md">
                                         <svg class="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                                        Pilih Resolusi & Server Streaming
+                                        Pilih Resolusi & Server
                                     </h3>
-                                    <button onclick="toggleServerModal()" class="text-gray-500 hover:text-white bg-white/5 hover:bg-white/10 p-2.5 rounded-xl transition-all active:scale-95 group border border-white/5">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                    <button onclick="toggleServerModal()" class="text-gray-400 hover:text-white bg-white/5 p-2 rounded-full transition-all active:scale-90 border border-white/5">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
                                     </button>
                                 </div>
-                                <div class="overflow-y-auto no-scrollbar space-y-7 pb-4">
+                                <div class="overflow-y-auto no-scrollbar space-y-6 pb-4">
                                     ${ep.server.qualities.map(q => `
                                         <div>
-                                            <div class="flex items-center gap-2.5 mb-3.5 pl-1.5 border-l-3 border-brand rounded-[2px]">
-                                                <h4 class="text-[12px] font-black text-white/90 uppercase tracking-[0.2em] drop-shadow-md">
+                                            <div class="flex items-center gap-2 mb-3">
+                                                <h4 class="text-[12px] font-black text-gray-300 uppercase tracking-widest">
                                                     ${q.title}
                                                 </h4>
-                                                <span class="text-[9px] text-gray-500 font-medium bg-black/30 px-2 py-0.5 rounded border border-white/5">Resolusi</span>
+                                                <span class="text-[9px] text-brand font-bold bg-brand/10 px-2 py-0.5 rounded border border-brand/20">RESOLUSI</span>
                                             </div>
-                                            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+                                            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;">
                                                 ${q.serverList.map(srv => `
-                                                    <button onclick="changeServerChip(this, '${srv.serverId}')" class="server-chip bg-[#171e30] border border-white/5 hover:border-brand/40 hover:bg-brand/10 text-white text-xs font-semibold py-4 px-4 rounded-xl transition-all duration-300 active:scale-95 text-left flex items-center gap-3.5 shadow-md hover:shadow-[0_0_20px_rgba(225,29,72,0.3)] group overflow-hidden relative">
-                                                        <div class="shrink-0 p-1.5 bg-black/50 rounded-lg text-gray-400 group-hover:text-brand group-hover:scale-110 transition-all border border-white/5 shadow-inner">
-                                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                                    <button onclick="changeServerChip(this, '${srv.serverId}')" class="server-chip text-white text-xs font-bold py-3.5 px-4 rounded-xl transition-all duration-300 active:scale-95 text-left flex items-center gap-2.5 shadow-md group relative overflow-hidden" style="background-color: #171f30; border: 1px solid rgba(255,255,255,0.05);">
+                                                        
+                                                        <div class="shrink-0 p-1 rounded bg-black/40 text-gray-400 group-hover:text-brand transition-colors">
+                                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                                         </div>
-                                                        <div class="flex-1 truncate">
-                                                            <span class="truncate uppercase font-bold tracking-wider text-[11px] group-hover:tracking-widest transition-all duration-500 text-gray-300 group-hover:text-white">
-                                                                ${srv.title.trim()}
-                                                            </span>
-                                                        </div>
-                                                        <div class="absolute inset-0 border border-brand/50 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                                        <div class="w-1.5 h-1.5 bg-gray-600 rounded-full group-hover:bg-brand transition-colors absolute top-2 right-2"></div>
+                                                        <span class="truncate uppercase tracking-wider text-[10px] sm:text-[11px] group-hover:text-white text-gray-200 relative z-10">
+                                                            ${srv.title.trim()}
+                                                        </span>
+                                                        <div class="absolute inset-0 border border-brand/50 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                                                     </button>
                                                 `).join('')}
                                             </div>
