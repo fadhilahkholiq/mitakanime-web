@@ -4,7 +4,7 @@
   "description": "Tonton jutaan anime subtitle Indonesia terlengkap secara gratis.",
   "start_url": "/home",
   "display": "standalone",
-  "background_color": "#000000",
+  "background_color": "#0a0f1c",
   "theme_color": "#e11d48",
   "icons": [
     {
