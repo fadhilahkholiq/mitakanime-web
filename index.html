@@ -106,7 +106,7 @@
                         <input type="text" id="hero-search-input" placeholder="Mau nonton anime apa hari ini?" class="w-full bg-card/60 backdrop-blur-md border border-white/10 text-white text-sm px-5 py-4 rounded-2xl outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand transition-all shadow-xl placeholder-gray-500">
                         <button type="submit" class="absolute right-4 top-1/2 -translate-y-1/2 bg-brand p-2 rounded-xl shadow-lg shadow-brand/20 active:scale-95 transition-transform"><svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg></button>
                     </form>
-                    <div class="mt-4 flex justify-center">
+                    <div class="mt-4 flex justify-center tracking-wider gap-2">
                         <a href="/az" class="inline-flex items-center gap-2 bg-white/5 hover:bg-brand/20 border border-white/10 hover:border-brand/50 text-gray-300 hover:text-white px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all shadow-sm active:scale-95">
                             <svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path></svg>
                             Anime A-Z
@@ -247,11 +247,11 @@
                     Temukan 19 Juta Anime Subtitle Indonesia Gratis!
                 </p>
                 <div class="flex flex-wrap justify-center mb-12 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
-                    <div class="flex flex-wrap justify-center gap-2.5 mb-12 text-[9px] font-bold text-gray-400 uppercase tracking-wider">
-                    <a href="/dmca" class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 hover:bg-brand hover:border-brand hover:text-white transition-all duration-300 active:scale-95 shadow-sm hover:shadow-[0_0_15px_rgba(225,29,72,0.4)]">DMCA</a>
-                    <a href="/terms" class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 hover:bg-brand hover:border-brand hover:text-white transition-all duration-300 active:scale-95 shadow-sm hover:shadow-[0_0_15px_rgba(225,29,72,0.4)]">Syarat & Ketentuan</a>
-                    <a href="mailto:dmca@mitaka.mom" target="_blank" class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 hover:bg-brand hover:border-brand hover:text-white transition-all duration-300 active:scale-95 shadow-sm hover:shadow-[0_0_15px_rgba(225,29,72,0.4)]">Kontak</a>
-                </div>
+                    <div class="flex flex-wrap justify-center gap-2 mb-12 text-[9px] font-bold text-gray-400 uppercase tracking-wider">
+                        <a href="/dmca" class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 hover:bg-brand hover:border-brand hover:text-white transition-all duration-300 active:scale-95 shadow-sm hover:shadow-[0_0_15px_rgba(225,29,72,0.4)]">DMCA</a>
+                        <a href="/terms" class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 hover:bg-brand hover:border-brand hover:text-white transition-all duration-300 active:scale-95 shadow-sm hover:shadow-[0_0_15px_rgba(225,29,72,0.4)]">Syarat & Ketentuan</a>
+                        <a href="mailto:dmca@mitaka.mom" target="_blank" class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 hover:bg-brand hover:border-brand hover:text-white transition-all duration-300 active:scale-95 shadow-sm hover:shadow-[0_0_15px_rgba(225,29,72,0.4)]">Kontak</a>
+                    </div>
                 </div>
                 <div class="pt-8 flex flex-col items-center gap-1.5">
                     <p class="text-[10px] text-gray-500 font-medium tracking-widest uppercase">
@@ -686,29 +686,37 @@
         async function fetchAZ() {
             const container = document.getElementById('az-container');
             const jumpContainer = document.getElementById('az-jump-links');
+            
             if (container.children.length > 0 && !container.innerHTML.includes('animate-pulse')) return;
+            
             container.innerHTML = `<div class="h-20 bg-card/50 backdrop-blur animate-pulse rounded-2xl mb-4 border border-white/5"></div>`.repeat(5);
             jumpContainer.innerHTML = '';
+            
             try {
                 const res = await fetch(`${BASE_URL}/unlimited`);
                 const result = await res.json();
+                
                 if (result.status === 'success') {
+                    
                     const groupedData = {};
+                    
                     result.data.list.forEach(group => {
-                        let rawLetter = group.startWith.trim().toUpperCase();
-                        if (rawLetter === 'Ü' || rawLetter === '' || rawLetter.includes('')) {
-                            rawLetter = 'U';
-                        }
-                        let cleanLetter = rawLetter.normalize("NFKD").replace(/[\u0300-\u036f]/g, "");
+                        // 1. Bersihkan spasi, jadikan huruf besar, hilangkan aksen (Ü -> U)
+                        let cleanLetter = group.startWith.trim().toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                        
+                        // 2. Ambil HANYA 1 karakter pertama (mencegah ada karakter gaib tak terlihat yang mengekor)
+                        cleanLetter = cleanLetter.charAt(0);
+                        
+                        // 3. Validasi Mutlak: Jika bukan A-Z, 0-9, atau #
                         if (!/^[A-Z0-9#]$/.test(cleanLetter)) {
+                            // Curi abjad dari huruf pertama judul anime di dalamnya
                             const firstTitle = group.animeList[0]?.title || "";
-                            let guessLetter = firstTitle.charAt(0).toUpperCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "");
-                            if (/^[A-Z0-9]$/.test(guessLetter)) {
-                                cleanLetter = guessLetter;
-                            } else {
-                                cleanLetter = '#';
-                            }
+                            let guessLetter = firstTitle.charAt(0).toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                            
+                            cleanLetter = /^[A-Z0-9]$/.test(guessLetter) ? guessLetter : '#';
                         }
+                        
+                        // 4. Masukkan ke keranjang yang sesuai
                         if (!groupedData[cleanLetter]) {
                             groupedData[cleanLetter] = {
                                 startWith: cleanLetter,
@@ -717,18 +725,25 @@
                         }
                         groupedData[cleanLetter].animeList.push(...group.animeList);
                     });
+
+                    // 5. Ubah ke Array dan Urutkan
                     const cleanList = Object.values(groupedData).sort((a, b) => {
                         if (a.startWith === '#') return -1;
                         if (b.startWith === '#') return 1;
                         return a.startWith.localeCompare(b.startWith, 'id', { numeric: true });
                     });
+
+                    // Render Tombol Lompat Cepat
                     jumpContainer.innerHTML = cleanList.map(group => `
                         <button onclick="document.getElementById('az-group-${group.startWith === '#' ? 'simbol' : group.startWith}').scrollIntoView({behavior: 'smooth', block: 'start'})" class="w-8 h-8 flex items-center justify-center rounded-lg bg-card/80 border border-white/10 hover:border-brand hover:bg-brand/20 text-xs font-bold text-gray-300 hover:text-white transition-all shadow-sm active:scale-90">
                             ${group.startWith}
                         </button>
                     `).join('');
+
+                    // Render List Data A-Z (Banner Full-Width Mutlak)
                     container.innerHTML = cleanList.map(group => {
                         const groupId = group.startWith === '#' ? 'simbol' : group.startWith;
+                        
                         return `
                         <div id="az-group-${groupId}" class="scroll-mt-20" style="margin-bottom: 40px;">
                             <div class="sticky z-20 flex items-center justify-between bg-black/90 backdrop-blur-xl border-y border-white/10 shadow-lg" style="top: 64px; margin-bottom: 24px; margin-left: -20px; margin-right: -20px; padding-left: 20px; padding-right: 20px; padding-top: 12px; padding-bottom: 12px;">
@@ -740,6 +755,7 @@
                                     ${group.animeList.length} Judul
                                 </span>
                             </div>
+                            
                             <div class="flex flex-wrap" style="gap: 10px;">
                                 ${group.animeList.map(a => `
                                     <a href="/anime/${a.animeId}" class="bg-card/40 backdrop-blur-sm border border-white/10 px-3.5 py-2 rounded-xl flex items-center group shadow-sm hover:shadow-[0_0_15px_rgba(225,29,72,0.3)] hover:bg-brand hover:border-brand transition-all duration-300 active:scale-95" style="max-width: 100%;">
