@@ -1110,6 +1110,8 @@
                                     // Perbaikan BUG Regex: Menemukan Angka dengan tepat
                                     let epTitle = episode.title;
                                     let displayNum = "SP";
+                                    
+                                    // Ini Regex yang benar tanpa double backslash
                                     const numMatch = epTitle.match(/\\d+(\\.\\d+)?/);
                                     
                                     if (numMatch) {
