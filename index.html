@@ -1089,7 +1089,7 @@
                 }
 
                 // ==========================================
-                // 3. GRID MINIMALIS (PERBAIKAN REGEX MUTLAK)
+                // 3. GRID MINIMALIS (PERBAIKAN STRUKTUR CSS GRID)
                 // ==========================================
                 let allEpisodesHTML = '';
                 if (ep.info && ep.info.episodeList && ep.info.episodeList.length > 0) {
@@ -1108,18 +1108,17 @@
                             <div class="grid grid-cols-5 gap-2.5 max-h-48 overflow-y-auto no-scrollbar pr-1">
                                 ${ep.info.episodeList.map(episode => {
                                     
-                                    // MENGGUNAKAN REGEX ASLI DARI INDEX.HTML ANDA
                                     let displayNum = "SP";
                                     const match = episode.title.match(/(Episode|Eps|OVA|OAD|Movie)\s?\d+(\.\d+)?/i);
                                     if (match) {
-                                        // Ganti kata 'Episode ' dengan kosong, menyisakan angka (atau membiarkan OVA/Movie)
                                         displayNum = match[0].replace(/Episode\s?|Eps\s?/i, '');
                                     }
                                     
                                     const isActive = episode.episodeId === episodeId;
                                     
+                                    // CSS Grid akan memastikan setiap elemen <a> ini memiliki proporsi lebar yang sama
                                     return `
-                                    <a href="/episode/${episode.episodeId}" class="flex flex-col items-center justify-center py-2.5 rounded-xl text-xs font-bold transition-all active:scale-90 ${isActive ? 'bg-brand text-white shadow-[0_0_15px_rgba(225,29,72,0.6)] animate-pulse' : 'bg-card/80 border border-white/5 text-gray-300 hover:text-white hover:border-brand/50 hover:bg-white/10'}">
+                                    <a href="/episode/${episode.episodeId}" class="col-span-1 flex flex-col items-center justify-center py-2.5 rounded-xl text-xs font-bold transition-all active:scale-90 ${isActive ? 'bg-brand text-white shadow-[0_0_15px_rgba(225,29,72,0.6)] animate-pulse' : 'bg-card/80 border border-white/5 text-gray-300 hover:text-white hover:border-brand/50 hover:bg-white/10'}">
                                         ${displayNum}
                                     </a>
                                     `;
@@ -1138,16 +1137,16 @@
                                 <svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg> 
                                 Link Unduhan
                             </h3>
-                            <div class="flex flex-col gap-2">
+                            <div class="flex flex-col gap-3">
                                 ${ep.downloadUrl.qualities.map(q => `
-                                    <div class="bg-card/50 p-3 rounded-xl border border-white/5 hover:border-white/10 transition-colors">
-                                        <div class="flex justify-between items-center mb-2.5">
+                                    <div class="bg-card/50 p-4 rounded-xl border border-white/5 hover:border-white/10 transition-colors shadow-sm">
+                                        <div class="flex justify-between items-center mb-4 border-b border-white/5 pb-2">
                                             <span class="font-bold text-xs text-white uppercase">${q.title.replace(/_/g, ' ')}</span>
                                             <span class="text-[9px] text-brand font-bold bg-brand/10 px-2 py-0.5 rounded border border-brand/20">${q.size}</span>
                                         </div>
-                                        <div class="flex flex-wrap gap-1.5">
+                                        <div class="flex flex-wrap gap-2">
                                             ${q.urls.map(url => `
-                                                <a rel="nofollow" href="${url.url}" target="_blank" class="bg-white/5 hover:bg-brand hover:text-white text-[10px] px-2.5 py-1 rounded-lg text-gray-400 transition-all border border-white/5 hover:border-brand active:scale-90">${url.title}</a>
+                                                <a rel="nofollow" href="${url.url}" target="_blank" class="bg-white/5 hover:bg-brand hover:text-white text-[10px] px-3 py-1.5 rounded-lg text-gray-400 transition-all border border-white/5 hover:border-brand active:scale-90 shadow-sm">${url.title}</a>
                                             `).join('')}
                                         </div>
                                     </div>
