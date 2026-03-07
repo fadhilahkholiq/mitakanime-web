@@ -1064,7 +1064,7 @@
                                     ${ep.server.qualities.map(q => `
                                         <div>
                                             <h4 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">${q.title}</h4>
-                                            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px;">
+                                            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px;" class="mb-5">
                                                 ${q.serverList.map(srv => `
                                                     <button onclick="changeServerChip(this, '${srv.serverId}')" class="server-chip bg-card/80 border border-white/5 text-gray-300 hover:text-white hover:border-brand/50 hover:bg-brand/10 text-[11px] font-medium py-3 px-3 rounded-xl transition-all active:scale-95 text-left truncate uppercase">
                                                         ${srv.title.trim()}
