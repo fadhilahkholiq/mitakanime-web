@@ -682,33 +682,62 @@
         async function fetchAZ() {
             const container = document.getElementById('az-container');
             const jumpContainer = document.getElementById('az-jump-links');
+            
             if (container.children.length > 0 && !container.innerHTML.includes('animate-pulse')) return;
+            
             container.innerHTML = `<div class="h-20 bg-card/50 backdrop-blur animate-pulse rounded-2xl mb-4 border border-white/5"></div>`.repeat(5);
             jumpContainer.innerHTML = '';
+            
             try {
                 const res = await fetch(`${BASE_URL}/unlimited`);
                 const result = await res.json();
+                
                 if (result.status === 'success') {
+                    
+                    // ==========================================
+                    // NORMALISASI & PENGURUTAN MUTLAK
+                    // ==========================================
                     const groupedData = {};
+                    
                     result.data.list.forEach(group => {
-                        let letter = group.startWith.trim().toUpperCase();
-                        if (letter === 'Ü') letter = 'U';
-                        if (!groupedData[letter]) {
-                            groupedData[letter] = {
-                                startWith: letter,
+                        // 1. Ambil huruf, jadikan huruf besar
+                        let rawLetter = group.startWith.trim().toUpperCase();
+                        
+                        // 2. Senjata Pamungkas: Lucuti semua aksen/titik/topi dari huruf (Ü menjadi U, dll)
+                        let cleanLetter = rawLetter.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                        
+                        // 3. Masukkan ke penampung
+                        if (!groupedData[cleanLetter]) {
+                            groupedData[cleanLetter] = {
+                                startWith: cleanLetter,
                                 animeList: []
                             };
                         }
-                        groupedData[letter].animeList.push(...group.animeList);
+                        
+                        groupedData[cleanLetter].animeList.push(...group.animeList);
                     });
-                    const cleanList = Object.values(groupedData);
+
+                    // 4. Ubah kembali ke Array dan URUTKAN paksa sesuai abjad dan angka
+                    const cleanList = Object.values(groupedData).sort((a, b) => {
+                        // Pastikan simbol '#' selalu di awal
+                        if (a.startWith === '#') return -1;
+                        if (b.startWith === '#') return 1;
+                        // Urutkan sisanya secara natural (1, 2, A, B, C...)
+                        return a.startWith.localeCompare(b.startWith, 'id', { numeric: true });
+                    });
+                    // ==========================================
+
+                    // Render Tombol Lompat Cepat
                     jumpContainer.innerHTML = cleanList.map(group => `
                         <button onclick="document.getElementById('az-group-${group.startWith === '#' ? 'simbol' : group.startWith}').scrollIntoView({behavior: 'smooth', block: 'start'})" class="w-8 h-8 flex items-center justify-center rounded-lg bg-card/80 border border-white/10 hover:border-brand hover:bg-brand/20 text-xs font-bold text-gray-300 hover:text-white transition-all shadow-sm active:scale-90">
                             ${group.startWith}
                         </button>
                     `).join('');
+
+                    // Render List Data A-Z
                     container.innerHTML = cleanList.map(group => {
                         const groupId = group.startWith === '#' ? 'simbol' : group.startWith;
+                        
                         return `
                         <div id="az-group-${groupId}" class="scroll-mt-20" style="margin-bottom: 40px;">
                             <div class="sticky z-20 flex items-center justify-between bg-black/90 backdrop-blur-xl border-y border-white/10 shadow-lg" style="top: 64px; margin-bottom: 24px; margin-left: -20px; margin-right: -20px; padding-left: 20px; padding-right: 20px; padding-top: 12px; padding-bottom: 12px;">
@@ -720,6 +749,7 @@
                                     ${group.animeList.length} Judul
                                 </span>
                             </div>
+                            
                             <div class="flex flex-wrap" style="gap: 10px;">
                                 ${group.animeList.map(a => `
                                     <a href="/anime/${a.animeId}" class="bg-card/40 backdrop-blur-sm border border-white/10 px-3.5 py-2 rounded-xl flex items-center group shadow-sm hover:shadow-[0_0_15px_rgba(225,29,72,0.3)] hover:bg-brand hover:border-brand transition-all duration-300 active:scale-95" style="max-width: 100%;">
