@@ -1050,7 +1050,7 @@
                     </div>
                 `;
                 // ==========================================
-                // LACI SERVER (PERBAIKAN PADDING, MARGIN, & STYLE TOMBOL)
+                // LACI SERVER (ANTI-MELAR & DESAIN PRESISI 100%)
                 // ==========================================
                 let serverModalHTML = '';
                 if (ep.server && ep.server.qualities && ep.server.qualities.length > 0) {
@@ -1059,42 +1059,46 @@
                             
                             <div id="server-backdrop" class="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-300 opacity-0 pointer-events-auto" onclick="toggleServerModal()"></div>
                             
-                            <div id="server-sheet" class="relative w-full max-w-md mx-auto flex flex-col pointer-events-auto transform translate-y-full transition-transform duration-300 shadow-[0_-15px_40px_rgba(0,0,0,0.8)]" style="background-color: #0d121c; border-top-left-radius: 24px; border-top-right-radius: 24px; max-height: 80vh; padding-bottom: max(env(safe-area-inset-bottom), 1.5rem);">
+                            <div class="relative w-full max-w-md mx-auto flex flex-col justify-end h-full pointer-events-none">
                                 
-                                <div class="w-10 h-1 bg-white/10 rounded-full mx-auto mt-3 mb-1 shrink-0"></div>
-
-                                <div class="flex justify-between items-center px-5 py-4 border-b border-white/5 shrink-0">
-                                    <h3 class="text-white font-bold text-[15px] flex items-center gap-2">
-                                        <svg class="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
-                                        Pilih Resolusi & Server
-                                    </h3>
-                                    <button onclick="toggleServerModal()" class="text-gray-400 hover:text-white bg-white/5 hover:bg-brand/20 p-1.5 rounded-full transition-all active:scale-90 border border-transparent hover:border-brand/30">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
-                                    </button>
-                                </div>
-                                
-                                <div class="overflow-y-auto no-scrollbar px-5 py-5 space-y-6">
-                                    ${ep.server.qualities.map(q => `
-                                        <div>
-                                            <div class="flex items-center gap-2.5 mb-3 pl-1">
-                                                <h4 class="text-[13px] font-bold text-white uppercase tracking-widest">${q.title}</h4>
-                                                <span class="text-[9px] text-brand font-bold bg-brand/10 px-1.5 py-0.5 rounded border border-brand/20 uppercase tracking-widest">Resolusi</span>
+                                <div id="server-sheet" class="relative w-full flex flex-col pointer-events-auto transform translate-y-full transition-transform duration-300 shadow-[0_-20px_50px_rgba(0,0,0,0.8)]" style="background-color: #0b101e; border-top: 1px solid rgba(255,255,255,0.05); border-top-left-radius: 20px; border-top-right-radius: 20px; max-height: 85vh; padding-bottom: max(env(safe-area-inset-bottom), 1rem);">
+                                    
+                                    <div class="flex justify-between items-center px-6 py-5 border-b border-white/5 shrink-0">
+                                        <h3 class="text-white font-bold text-[15px] flex items-center gap-2.5">
+                                            <svg width="20" height="20" class="text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
+                                            Pilih Resolusi & Server
+                                        </h3>
+                                        <button onclick="toggleServerModal()" class="text-gray-400 hover:text-white bg-white/5 p-2 rounded-full transition-all active:scale-90 border border-white/5">
+                                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="overflow-y-auto no-scrollbar px-6 py-5 space-y-7">
+                                        ${ep.server.qualities.map(q => `
+                                            <div>
+                                                <div class="flex items-center gap-2.5 mb-3.5 pl-0.5">
+                                                    <h4 class="text-[13px] font-bold text-gray-200 uppercase tracking-widest">${q.title}</h4>
+                                                    <span class="text-[9px] text-brand font-bold bg-brand/10 px-1.5 py-[2px] rounded border border-brand/20 uppercase tracking-wider">Resolusi</span>
+                                                </div>
+                                                
+                                                <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+                                                    ${q.serverList.map(srv => `
+                                                        <button onclick="changeServerChip(this, '${srv.serverId}')" class="server-chip rounded-full transition-all active:scale-95 group hover:border-brand/50 hover:bg-brand/10" style="background-color: #141b29; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: flex-start; padding: 10px 16px; gap: 10px; width: 100%;">
+                                                            
+                                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-gray-500 group-hover:text-brand transition-colors" style="flex-shrink: 0;">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                            </svg>
+                                                            
+                                                            <span class="group-hover:text-white" style="font-size: 11px; font-weight: 700; color: #d1d5db; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-top: 1px;">
+                                                                ${srv.title.trim()}
+                                                            </span>
+                                                        </button>
+                                                    `).join('')}
+                                                </div>
                                             </div>
-                                            
-                                            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;">
-                                                ${q.serverList.map(srv => `
-                                                    <button onclick="changeServerChip(this, '${srv.serverId}')" class="server-chip flex items-center justify-start gap-3 py-3 px-4 transition-all active:scale-95 group hover:border-brand/50 hover:bg-brand/10" style="background-color: #161d2c; border: 1px solid rgba(255,255,255,0.06); border-radius: 14px;">
-                                                        
-                                                        <svg class="w-[18px] h-[18px] text-gray-500 group-hover:text-brand transition-colors shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
-                                                        </svg>
-                                                        
-                                                        <span class="text-[11px] font-bold text-gray-300 group-hover:text-white uppercase tracking-wider truncate pt-[1px]">${srv.title.trim()}</span>
-                                                    </button>
-                                                `).join('')}
-                                            </div>
-                                        </div>
-                                    `).join('')}
+                                        `).join('')}
+                                    </div>
                                 </div>
                             </div>
                         </div>
