@@ -698,15 +698,16 @@
                         const groupId = group.startWith === '#' ? 'simbol' : group.startWith;
                         return `
                         <div id="az-group-${groupId}" class="scroll-mt-16 mb-10">
-                            <div class="sticky top-16 z-20 bg-dark/95 backdrop-blur-md py-3 border-y border-white/5 mb-4 -mx-5 px-5 shadow-sm">
+                            <div class="sticky top-16 z-20 bg-dark/95 backdrop-blur-md py-3 border-y border-white/5 mb-6 -mx-5 px-5 shadow-sm">
                                 <h3 class="text-lg font-bold text-brand drop-shadow-md flex items-center gap-2">
                                     <span class="bg-brand/10 w-8 h-8 rounded-lg flex items-center justify-center border border-brand/20">${group.startWith}</span>
                                 </h3>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 ${group.animeList.map(a => `
-                                    <a href="/anime/${a.animeId}" class="bg-card/60 backdrop-blur-sm border border-white/5 p-3.5 rounded-xl flex items-start gap-3 text-xs font-medium text-gray-300 hover:text-white hover:bg-brand/10 hover:border-brand transition-all duration-300 active:scale-[0.98] group shadow-sm hover:shadow-[0_5px_15px_rgba(225,29,72,0.15)]">
-                                        <div class="mt-1 w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-brand shrink-0 transition-colors shadow-[0_0_5px_rgba(0,0,0,0)] group-hover:shadow-[0_0_8px_rgba(225,29,72,0.8)]"></div>
+                                    <a href="/anime/${a.animeId}" class="bg-card/60 backdrop-blur-sm border border-white/5 p-3.5 rounded-xl flex items-center gap-3 text-xs font-medium text-gray-300 hover:text-white hover:bg-brand/10 hover:border-brand transition-all duration-300 active:scale-[0.98] group shadow-sm hover:shadow-[0_5px_15px_rgba(225,29,72,0.15)]">
+                                        
+                                        <div class="w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-brand shrink-0 transition-colors shadow-[0_0_5px_rgba(0,0,0,0)] group-hover:shadow-[0_0_8px_rgba(225,29,72,0.8)]"></div>
                                         <span class="line-clamp-2 leading-relaxed">${a.title}</span>
                                     </a>
                                 `).join('')}
