@@ -689,12 +689,25 @@
                 const res = await fetch(`${BASE_URL}/unlimited`);
                 const result = await res.json();
                 if (result.status === 'success') {
-                    jumpContainer.innerHTML = result.data.list.map(group => `
+                    const groupedData = {};
+                    result.data.list.forEach(group => {
+                        let letter = group.startWith.trim().toUpperCase();
+                        if (letter === 'Ü') letter = 'U';
+                        if (!groupedData[letter]) {
+                            groupedData[letter] = {
+                                startWith: letter,
+                                animeList: []
+                            };
+                        }
+                        groupedData[letter].animeList.push(...group.animeList);
+                    });
+                    const cleanList = Object.values(groupedData);
+                    jumpContainer.innerHTML = cleanList.map(group => `
                         <button onclick="document.getElementById('az-group-${group.startWith === '#' ? 'simbol' : group.startWith}').scrollIntoView({behavior: 'smooth', block: 'start'})" class="w-8 h-8 flex items-center justify-center rounded-lg bg-card/80 border border-white/10 hover:border-brand hover:bg-brand/20 text-xs font-bold text-gray-300 hover:text-white transition-all shadow-sm active:scale-90">
                             ${group.startWith}
                         </button>
                     `).join('');
-                    container.innerHTML = result.data.list.map(group => {
+                    container.innerHTML = cleanList.map(group => {
                         const groupId = group.startWith === '#' ? 'simbol' : group.startWith;
                         return `
                         <div id="az-group-${groupId}" class="scroll-mt-20" style="margin-bottom: 40px;">
