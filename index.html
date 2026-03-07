@@ -1107,14 +1107,14 @@
                 let allEpisodesHTML = '';
                 if (ep.info && ep.info.episodeList && ep.info.episodeList.length > 0) {
                     allEpisodesHTML = `
-                        <div class="relative z-10 mt-6 bg-black/20 p-4 rounded-2xl border border-white/5 shadow-inner">
+                        <div class="relative z-10 mt-4 bg-black/20 p-4 rounded-2xl border border-white/5 shadow-inner">
                             <div class="flex justify-between items-center mb-4">
                                 <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
                                     <svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"></path></svg> 
                                     Pilih Episode
                                 </h3>
-                                <a href="/anime/${ep.animeId}" class="text-[9px] font-bold text-gray-400 hover:text-white transition-colors flex items-center gap-1 bg-white/5 px-2.5 py-1 rounded-full border border-white/10 active:scale-95 uppercase tracking-wider">
-                                    Lihat Detail <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                <a href="/anime/${ep.animeId}" class="text-[9px] font-bold text-gray-400 hover:text-white transition-colors flex items-center gap-1 bg-white/5 px-2.5 py-1 rounded-full border border-white/10 active:scale-95 tracking-wider">
+                                    Detail Anime <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                                 </a>
                             </div>
                             
