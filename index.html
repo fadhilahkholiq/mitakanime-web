@@ -1089,7 +1089,7 @@
                 }
 
                 // ==========================================
-                // 3. GRID MINIMALIS (BUGFIX: ANGKA NORMAL)
+                // 3. GRID MINIMALIS (PERBAIKAN REGEX MUTLAK)
                 // ==========================================
                 let allEpisodesHTML = '';
                 if (ep.info && ep.info.episodeList && ep.info.episodeList.length > 0) {
@@ -1107,19 +1107,13 @@
                             
                             <div class="grid grid-cols-5 gap-2.5 max-h-48 overflow-y-auto no-scrollbar pr-1">
                                 ${ep.info.episodeList.map(episode => {
-                                    // Perbaikan BUG Regex: Menemukan Angka dengan tepat
-                                    let epTitle = episode.title;
+                                    
+                                    // MENGGUNAKAN REGEX ASLI DARI INDEX.HTML ANDA
                                     let displayNum = "SP";
-                                    
-                                    // Ini Regex yang benar tanpa double backslash
-                                    const numMatch = epTitle.match(/\\d+(\\.\\d+)?/);
-                                    
-                                    if (numMatch) {
-                                        displayNum = numMatch[0];
-                                    } else if (epTitle.toLowerCase().includes('ova')) {
-                                        displayNum = 'OVA';
-                                    } else if (epTitle.toLowerCase().includes('movie')) {
-                                        displayNum = 'MOV';
+                                    const match = episode.title.match(/(Episode|Eps|OVA|OAD|Movie)\s?\d+(\.\d+)?/i);
+                                    if (match) {
+                                        // Ganti kata 'Episode ' dengan kosong, menyisakan angka (atau membiarkan OVA/Movie)
+                                        displayNum = match[0].replace(/Episode\s?|Eps\s?/i, '');
                                     }
                                     
                                     const isActive = episode.episodeId === episodeId;
