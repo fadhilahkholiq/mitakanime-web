@@ -73,6 +73,12 @@
                     <input type="text" id="search-input" placeholder="Cari" class="bg-black/30 border border-white/10 text-white text-xs px-4 py-1.5 rounded-full outline-none focus:ring-1 focus:ring-brand w-36 focus:w-45 transition-all placeholder-gray-500">
                     <button type="submit" class="absolute right-2 text-gray-400"><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg></button>
                 </form>
+                <div class="mt-4 flex justify-center">
+                        <a href="/az" class="inline-flex items-center gap-2 bg-white/5 hover:bg-brand/20 border border-white/10 hover:border-brand/50 text-gray-300 hover:text-white px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all shadow-sm active:scale-95">
+                            <svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path></svg>
+                            Jelajahi Direktori A-Z
+                        </a>
+                    </div>
                 <button id="btn-search-mobile" class="[@media(min-width:400px)]:hidden text-gray-300 hover:text-brand p-1 transition-colors active:scale-90"></button>
             </div>
         </header>
@@ -82,6 +88,20 @@
             </form>
         </div>
         <main class="pt-16 pb-6 flex-grow">
+            <div id="view-az" class="page-view">
+                <div class="p-5 pt-8 max-w-2xl mx-auto pb-24">
+                    <div class="mb-6 flex items-center justify-between">
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2 drop-shadow-md">
+                            <svg class="w-6 h-6 text-brand drop-shadow-[0_0_8px_rgba(225,29,72,0.8)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path></svg>
+                            Direktori Anime A-Z
+                        </h2>
+                    </div>
+                    <div class="flex flex-wrap gap-1.5 mb-8 bg-black/40 p-3 rounded-2xl border border-white/5 shadow-inner justify-center" id="az-jump-links">
+                    </div>
+                    <div id="az-container" class="space-y-8">
+                    </div>
+                </div>
+            </div>
             <div id="view-home" class="page-view"> 
                 <div class="relative w-full">
                     <div id="hero-section" class="flex overflow-x-auto snap-x-mandatory no-scrollbar w-full h-[380px] bg-card/10 animate-pulse"></div>
@@ -519,6 +539,11 @@
                     document.getElementById('view-batch').classList.add('active');
                     headerTitle.innerText = 'Download Batch';
                     fetchBatch(paramId);
+                } else if (route === 'az') {
+                    document.getElementById('view-az').classList.add('active');
+                    headerTitle.innerText = 'Daftar A-Z';
+                    updateSEO('Direktori Anime A-Z - Mitaka Anime', 'Telusuri direktori lengkap ribuan anime berdasarkan abjad dari A sampai Z secara gratis.');
+                    fetchAZ();
                 } else if (route === 'dmca') {
                     document.getElementById('view-dmca').classList.add('active');
                     headerTitle.innerText = 'DMCA';
@@ -653,6 +678,43 @@
                     paginationContainer.innerHTML = renderPagination(result.pagination, '/katalog');
                 }
             } catch (e) { container.innerHTML = '<p class="text-red-500 text-sm col-span-2 text-center">Gagal memuat data.</p>'; }
+        }
+        async function fetchAZ() {
+            const container = document.getElementById('az-container');
+            const jumpContainer = document.getElementById('az-jump-links');
+            if (container.children.length > 0 && !container.innerHTML.includes('animate-pulse')) return;
+            container.innerHTML = `<div class="h-20 bg-card/50 backdrop-blur animate-pulse rounded-2xl mb-4 border border-white/5"></div>`.repeat(5);
+            jumpContainer.innerHTML = '';
+            try {
+                const res = await fetch(`${BASE_URL}/unlimited`);
+                const result = await res.json();
+                if (result.status === 'success') {
+                    jumpContainer.innerHTML = result.data.list.map(group => `
+                        <button onclick="document.getElementById('az-group-${group.startWith === '#' ? 'simbol' : group.startWith}').scrollIntoView({behavior: 'smooth', block: 'start'})" class="w-8 h-8 flex items-center justify-center rounded-lg bg-card/80 border border-white/10 hover:border-brand hover:bg-brand/20 text-xs font-bold text-gray-300 hover:text-white transition-all shadow-sm active:scale-90">
+                            ${group.startWith}
+                        </button>
+                    `).join('');
+                    container.innerHTML = result.data.list.map(group => `
+                        <div id="az-group-${group.startWith === '#' ? 'simbol' : group.startWith}" class="scroll-mt-20">
+                            <div class="sticky top-16 z-10 bg-dark/95 backdrop-blur-md py-2 border-b border-brand/20 mb-3 -mx-2 px-2 shadow-[0_10px_10px_-10px_rgba(0,0,0,0.5)]">
+                                <h3 class="text-xl font-bold text-brand drop-shadow-[0_0_8px_rgba(225,29,72,0.5)] flex items-center gap-2">
+                                    <span class="bg-brand/10 w-8 h-8 rounded-lg flex items-center justify-center border border-brand/20">${group.startWith}</span>
+                                </h3>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                                ${group.animeList.map(a => `
+                                    <a href="/anime/${a.animeId}" class="bg-card/60 backdrop-blur-sm border border-white/5 p-3.5 rounded-xl flex items-center text-xs font-medium text-gray-300 hover:text-white hover:bg-brand/20 hover:border-brand transition-all duration-300 active:scale-[0.98] group shadow-sm hover:shadow-[0_5px_15px_rgba(225,29,72,0.15)]">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-brand mr-3 shrink-0 transition-colors shadow-[0_0_5px_rgba(0,0,0,0)] group-hover:shadow-[0_0_8px_rgba(225,29,72,0.8)]"></span>
+                                        <span class="truncate line-clamp-1">${a.title}</span>
+                                    </a>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (e) {
+                container.innerHTML = '<p class="text-red-500 text-sm text-center bg-red-500/10 p-4 rounded-2xl border border-red-500/20">Gagal memuat direktori A-Z.</p>';
+            }
         }
         async function fetchJadwal() {
             const container = document.getElementById('jadwal-container');
