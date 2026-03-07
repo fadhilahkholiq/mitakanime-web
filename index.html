@@ -699,16 +699,16 @@
                         return `
                         <div id="az-group-${groupId}" class="scroll-mt-20" style="margin-bottom: 40px;">
                             
-                            <div class="sticky z-20 bg-dark/95 backdrop-blur-md py-3 border-y border-white/5 -mx-5 px-5 shadow-sm" style="top: 64px; margin-bottom: 24px;">
-                                <h3 class="text-lg font-bold text-brand drop-shadow-md flex items-center gap-2">
-                                    <span class="bg-brand/10 w-8 h-8 rounded-lg flex items-center justify-center border border-brand/20">${group.startWith}</span>
+                            <div class="sticky z-20 bg-dark/95 backdrop-blur-md py-3 border-b border-white/5 -mx-5 px-5 shadow-sm" style="top: 64px; margin-bottom: 20px;">
+                                <h3 class="text-xl font-bold text-white flex items-center gap-3">
+                                    <span class="text-brand font-black text-2xl drop-shadow-[0_0_8px_rgba(225,29,72,0.8)]">${group.startWith}</span>
+                                    <span class="text-[10px] font-medium text-gray-500 uppercase tracking-widest bg-white/5 px-2 py-1 rounded-md border border-white/10">${group.animeList.length} Judul</span>
                                 </h3>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2" style="gap: 12px;">
+                            <div class="flex flex-wrap" style="gap: 10px;">
                                 ${group.animeList.map(a => `
-                                    <a href="/anime/${a.animeId}" class="bg-card/60 backdrop-blur-sm border border-white/5 p-3 rounded-xl flex group shadow-sm hover:shadow-[0_5px_15px_rgba(225,29,72,0.15)] hover:bg-brand/10 hover:border-brand transition-all duration-300 active:scale-[0.98]" style="align-items: center; gap: 12px;">
-                                        <div class="rounded-full bg-white/20 group-hover:bg-brand transition-colors shadow-[0_0_5px_rgba(0,0,0,0)] group-hover:shadow-[0_0_8px_rgba(225,29,72,0.8)]" style="width: 6px; height: 6px; flex-shrink: 0; margin: 0;"></div>
-                                        <span class="text-xs font-medium text-gray-300 group-hover:text-white line-clamp-2" style="line-height: 1.5;">${a.title}</span>
+                                    <a href="/anime/${a.animeId}" class="bg-card/40 backdrop-blur-sm border border-white/10 px-3 py-2 rounded-xl flex items-center group shadow-sm hover:shadow-[0_0_15px_rgba(225,29,72,0.3)] hover:bg-brand hover:border-brand transition-all duration-300 active:scale-95" style="max-width: 100%;">
+                                        <span class="text-xs font-semibold text-gray-300 group-hover:text-white truncate" style="max-width: 250px;">${a.title}</span>
                                     </a>
                                 `).join('')}
                             </div>
