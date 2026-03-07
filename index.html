@@ -8,6 +8,12 @@
     <meta name="description" content="Nonton dan download anime subtitle Indonesia terbaru dan terlengkap, ongoing maupun completed, di Mitaka Anime.">
     <link rel="icon" type="image/x-icon" href="/favicon.svg">
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.svg">
+    <meta name="theme-color" content="#e11d48">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Mitaka">
+    <link rel="apple-touch-icon" href="/gambar/icon-192x192.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/style.css">
     <style>
@@ -1193,7 +1199,7 @@
                         ${extraInfoHTML}
                         ${downloadHTML}
                         <div class="mt-10 mb-4 flex justify-center">
-                            <a href="/anime/${ep.animeId || ep.slug}" class="group relative inline-flex items-center gap-2.5 px-3 py-1.5 bg-black/40 backdrop-blur-md border border-white/10 hover:border-brand/50 hover:bg-brand/10 rounded-full text-xs font-bold text-gray-400 hover:text-white transition-all duration-300 active:scale-95 shadow-lg hover:shadow-[0_0_20px_rgba(225,29,72,0.2)]">
+                            <a href="/anime/${ep.animeId || ep.slug}" class="group relative inline-flex items-center gap-1 px-3 py-1.5 bg-black/40 backdrop-blur-md border border-white/10 hover:border-brand/50 hover:bg-brand/10 rounded-full text-xs font-bold text-gray-400 hover:text-white transition-all duration-300 active:scale-95 shadow-lg hover:shadow-[0_0_20px_rgba(225,29,72,0.2)]">
                                 Detail Anime <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                             </a>
                         </div>
@@ -1253,6 +1259,17 @@
             });
         }
         document.getElementById("tahun").innerHTML = new Date().getFullYear();
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/script/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker sukses didaftarkan dengan scope: ', registration.scope);
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker gagal didaftarkan: ', err);
+                    });
+            });
+        }
     </script>
     <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a6f24b8453a047e3a1a0ac136c3eec10"}'></script>
 </body>
