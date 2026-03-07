@@ -971,15 +971,26 @@
                         <div class="grid grid-cols-2 gap-2.5">
                             ${anime.episodeList.map(eps => {
                                 let epTitle = eps.title;
-                                const match = epTitle.match(/(Episode|Eps|OVA|OAD|Movie)\s?\d+(\.\d+)?/i);
-                                if (match) {
-                                    epTitle = match[0].replace(/eps/i, 'Episode');
+                                const matchStandard = epTitle.match(/(Episode|Eps|OVA|OAD|Movie)\s?(\d+(\.\d+)?)/i);
+                                if (matchStandard) {
+                                    const type = matchStandard[1].toLowerCase() === 'eps' ? 'Episode' : matchStandard[1];
+                                    epTitle = type.charAt(0).toUpperCase() + type.slice(1) + ' ' + matchStandard[2];
                                 } else {
-                                    const lower = epTitle.toLowerCase();
-                                    if (lower.includes('ova')) epTitle = 'OVA';
-                                    else if (lower.includes('oad')) epTitle = 'OAD';
-                                    else if (lower.includes('movie')) epTitle = 'Movie';
-                                    else if (lower.includes('special') || lower.includes('spesial')) epTitle = 'Special';
+                                    const matchHiddenNumber = epTitle.match(/(\d+(\.\d+)?)\s*(?:\(End\))?\s*(?:Subtitle|Sub)/i);
+                                    if (matchHiddenNumber) {
+                                        epTitle = "Episode " + matchHiddenNumber[1];
+                                    } else {
+                                        const allNumbers = epTitle.match(/\b\d+(\.\d+)?\b/g);
+                                        if (allNumbers && allNumbers.length > 0) {
+                                            epTitle = "Episode " + allNumbers[allNumbers.length - 1];
+                                        } else {
+                                            const lower = epTitle.toLowerCase();
+                                            if (lower.includes('ova')) epTitle = 'OVA';
+                                            else if (lower.includes('oad')) epTitle = 'OAD';
+                                            else if (lower.includes('movie')) epTitle = 'Movie';
+                                            else if (lower.includes('special') || lower.includes('spesial')) epTitle = 'Special';
+                                        }
+                                    }
                                 }
                                 return `
                                 <a href="/episode/${eps.episodeId}" class="bg-card/80 backdrop-blur border border-white/5 hover:border-brand hover:bg-brand/10 p-3 rounded-xl flex justify-between items-center text-left transition-all active:scale-[0.98] group shadow-sm hover:shadow-[0_5px_15px_rgba(225,29,72,0.2)] hover:-translate-y-0.5">
