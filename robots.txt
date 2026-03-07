@@ -1,2 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /search/
+Disallow: /ongoing/
+Disallow: /katalog/
+Disallow: /genre/*/*
