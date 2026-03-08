@@ -1234,9 +1234,7 @@
                             ${allEpisodesHTML}
                             ${downloadHTML}
                             <h3 class="font-bold mt-8 mb-3 border-l-4 border-brand pl-3 text-white text-lg">Informasi</h3>
-                            <div class="absolute bottom-[10px] left-5 w-36 rounded-xl shadow-[0_15px_30px_rgba(0,0,0,0.8)] border border-white/10 overflow-hidden group z-10">
-                               <img src="${detailOk.poster}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            </div>
+                            <img src="${detailOk.poster}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                             <div class="flex flex-wrap gap-2 mt-4">
                                 ${detailOk.genreList.map(g => {
                                     const fallbackTitle = g.genreId.split('-').map(word => 
