@@ -1033,6 +1033,8 @@
                 const ep = result.data;
                 const animeRes = await fetch(`${BASE_URL}/anime/${ep.animeId}`);
                 const animeResult = await animeRes.json();
+                const detailOk = animeResult.data;
+                const sinopsisText = detailOk.synopsis.paragraphs.length > 0 ? detailOk.synopsis.paragraphs[0].substring(0, 150) + '...' : `Nonton ${anime.title} subtitle Indonesia gratis.`;
                 const animePoster = animeResult.data.poster;
                 const animeTitle = animeResult.data.title; 
                 updateSEO(`Download ${ep.title}`, `Streaming dan download ${ep.title} gratis di Mitaka Anime, kualitas 360p hingga 1080p dengan sub Indo/Indonesia.`, animePoster); 
@@ -1232,6 +1234,8 @@
                             ${allEpisodesHTML}
                             ${downloadHTML}
                         </div>
+                        <h3 class="font-bold mt-8 mb-3 border-l-4 border-brand pl-3 text-white text-lg">Informasi</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed opacity-90">${detailOk.synopsis.paragraphs.join('<br/><br/>') || 'Sinopsis belum ditambahkan.'}</p>
                     </div>
                 `;
             } catch (e) { 
