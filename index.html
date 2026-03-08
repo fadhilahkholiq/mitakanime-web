@@ -47,6 +47,11 @@
         .snap-center {
             scroll-snap-align: center;
         }
+        @keyframes loadingBar {
+            0% { width: 0%; opacity: 0.5; }
+            50% { width: 70%; opacity: 1; }
+            100% { width: 100%; opacity: 1; }
+        }
     </style>
 </head>
 <body ontouchstart="" class="bg-black text-gray-200 font-sans selection:bg-brand selection:text-white select-none no-scrollbar">
