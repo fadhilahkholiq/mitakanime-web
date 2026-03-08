@@ -1191,6 +1191,20 @@
                         </div>
                     `;
                 }
+                let extraInfoHTML = '';
+                if (ep.info) {
+                    let genreHTML = '';
+                    if (ep.info.genreList && ep.info.genreList.length > 0) {
+                        genreHTML = `
+                            <div class="flex flex-wrap gap-2 mt-4 mb-2">
+                                ${ep.info.genreList.map(g => {
+                                    const fallbackTitle = g.genreId.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                                    return `<a href="/genre/${g.genreId}/1" class="bg-card border border-white/10 hover:border-brand hover:bg-brand/20 text-[10px] px-3 py-1.5 rounded-full text-gray-300 transition-all active:scale-95 shadow-sm">${g.title?.trim() || fallbackTitle}</a>`;
+                                }).join('')}
+                            </div>
+                        `;
+                    }
+                }
                 container.innerHTML = `
                     <div class="relative w-full">
                         <div class="absolute top-0 left-0 right-0 h-[300px] z-0 pointer-events-none [-webkit-mask-image:linear-gradient(to_top,transparent_0%,black_100%)] [mask-image:linear-gradient(to_top,transparent_0%,black_100%)]">
@@ -1198,8 +1212,12 @@
                         </div>
                         <div class="relative z-10 pt-6 px-5 mt-4">
                             <h2 class="text-base font-bold text-white leading-tight drop-shadow-md">${animeTitle}</h2>
-                            <h3 class="text-xs text-brand font-bold tracking-widest uppercase mt-1 opacity-90">${currentEpisodeLabel}</h3>
+                            <h3 class="text-xs text-brand font-bold tracking-widest uppercase mt-1 opacity-90">
+                                ${currentEpisodeLabel}
+                                <span class="bg-brand/20 text-brand text-[9px] font-bold uppercase tracking-widest px-2.5 py-1.5 rounded-md border border-brand/30 flex items-center gap-1.5 shadow-sm backdrop-blur-sm"><span class="w-1.5 h-1.5 rounded-full bg-brand animate-pulse"></span>Subtitle Indonesia</span>
+                            </h3>
                         </div>
+                        ${extraInfoHTML}
                         <div id="video-section-container" class="relative pt-4 px-4 pb-4 transition-all duration-500 rounded-b-[24px]">
                             <div id="video-wrapper" class="relative w-full aspect-video rounded-[14px] ring-1 ring-white/10 overflow-hidden bg-black group cursor-pointer shadow-lg" onclick="playVideo('${ep.defaultStreamingUrl}')">
                                 <img src="${animePoster}" class="absolute inset-0 w-full h-full object-cover blur-sm opacity-60 scale-105 group-hover:scale-110 transition-transform duration-700">
