@@ -51,8 +51,8 @@
 </head>
 <body ontouchstart="" class="bg-black text-gray-200 font-sans selection:bg-brand selection:text-white select-none no-scrollbar">
     <div id="toast-container" class="fixed top-5 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-2 pointer-events-none"></div>
-    <div id="splash-screen" class="fixed inset-0 z-[100] bg-[#0a0f1c] flex flex-col items-center justify-center transition-all duration-700 max-w-md mx-auto overflow-hidden">
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(225,29,72,0.15)_0%,transparent_60%)]"></div>
+    <div id="splash-screen" class="fixed inset-0 z-[100] bg-dark flex flex-col items-center justify-center transition-all duration-700 max-w-md mx-auto overflow-hidden">
+        <div class="absolute inset-0" style="background: radial-gradient(circle at center, rgba(225,29,72,0.15) 0%, transparent 60%);"></div>
         <div id="splash-logo-container" class="relative z-10 flex flex-col items-center transform transition-transform duration-700 scale-100">
             <div class="w-20 h-20 bg-brand/20 rounded-full flex items-center justify-center mb-5 shadow-[0_0_40px_rgba(225,29,72,0.5)] border border-brand/40 relative">
                 <div class="absolute inset-0 rounded-full border border-brand animate-ping opacity-20"></div>
@@ -63,7 +63,7 @@
             </h1>
         </div>
         <p class="text-gray-400 mt-8 text-[10px] font-bold tracking-[0.2em] uppercase relative z-10 opacity-80">
-            Tonton 19 Juta Anime Gratis!
+            Tonton 19 Juta Anime Gratis di Mitaka!
         </p>
         <div class="absolute bottom-16 w-48 h-1 bg-white/10 rounded-full overflow-hidden z-10">
             <div class="h-full bg-brand rounded-full shadow-[0_0_10px_rgba(225,29,72,0.8)]" style="animation: loadingBar 1.2s ease-in-out forwards;"></div>
@@ -111,7 +111,7 @@
                 </div>
                 <div class="px-5 mb-8 relative z-30" style="margin-top: -24px;">
                     <form id="hero-search-form" class="relative group">
-                        <input type="text" id="hero-search-input" placeholder="Mau nonton anime apa?" class="w-full bg-card/80 backdrop-blur-xl border border-white/10 text-white text-sm px-5 py-4 rounded-2xl outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand transition-all shadow-2xl placeholder-gray-500">
+                        <input type="text" id="hero-search-input" placeholder="Mau nonton anime apa hari ini?" class="w-full bg-card/80 backdrop-blur-xl border border-white/10 text-white text-sm px-5 py-4 rounded-2xl outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand transition-all shadow-2xl placeholder-gray-500">
                         <button type="submit" class="absolute right-4 top-1/2 -translate-y-1/2 bg-brand p-2 rounded-xl shadow-lg shadow-brand/20 active:scale-95 transition-transform"><svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg></button>
                     </form>
                     <div class="mt-4 flex justify-center tracking-wider gap-2">
