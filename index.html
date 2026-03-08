@@ -1199,7 +1199,7 @@
                             <div class="flex flex-wrap gap-2 mt-4 mb-2">
                                 ${ep.info.genreList.map(g => {
                                     const fallbackTitle = g.genreId.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-                                    return `<a href="/genre/${g.genreId}/1" class="bg-card border border-white/10 hover:border-brand hover:bg-brand/20 text-[10px] px-3 py-1.5 rounded-full text-gray-300 transition-all active:scale-95 shadow-sm">${g.title?.trim() || fallbackTitle}</a>`;
+                                    return `<a href="/genre/${g.genreId}/1" class="bg-card border border-white/10 hover:border-brand hover:bg-brand/20 text-[10px] px-3 py-1.5 rounded-[14px] text-gray-300 transition-all active:scale-95 shadow-sm">${g.title?.trim() || fallbackTitle}</a>`;
                                 }).join('')}
                             </div>
                         `;
@@ -1213,7 +1213,7 @@
                         </div>
                         <div class="relative z-10 pt-6 px-5 mt-4">
                             <h2 class="text-base font-bold text-white leading-tight drop-shadow-md">${animeTitle}</h2>
-                            <h3 class="text-xs text-brand font-bold tracking-widest uppercase mt-1 opacity-90">${currentEpisodeLabel} &bull; Subtitle Indonesia</h3>
+                            <h3 class="text-xs text-brand font-bold tracking-widest mt-1 opacity-90">${currentEpisodeLabel} &bull; Subtitle Indonesia</h3>
                             ${extraInfoHTML}
                         </div>
                         <div id="video-section-container" class="relative pt-4 px-4 pb-4 transition-all duration-500 rounded-b-[24px]">
