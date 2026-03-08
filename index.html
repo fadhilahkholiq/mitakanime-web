@@ -47,6 +47,22 @@
         .snap-center {
             scroll-snap-align: center;
         }
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 0.8; }
+        }
+        @keyframes breathe {
+            0% { transform: scale(1); box-shadow: 0 0 20px rgba(225,29,72,0.3); }
+            100% { transform: scale(1.05); box-shadow: 0 0 45px rgba(225,29,72,0.7); }
+        }
+        @keyframes gentlePing {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
         @keyframes loadingBar {
             0% { width: 0%; opacity: 0.5; }
             50% { width: 70%; opacity: 1; }
@@ -58,15 +74,24 @@
     <div id="toast-container" class="fixed top-5 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-2 pointer-events-none"></div>
     <div id="splash-screen" class="fixed inset-0 z-[100] bg-dark flex flex-col items-center justify-center transition-all duration-700 max-w-md mx-auto overflow-hidden">
         <div class="absolute inset-0" style="background: radial-gradient(circle at center, rgba(225,29,72,0.15) 0%, transparent 60%);"></div>
-        <div id="splash-logo-container" class="relative z-10 flex flex-col items-center transform transition-transform duration-700 scale-100">
-            <div class="w-20 h-20 bg-brand/20 rounded-full flex items-center justify-center mb-5 shadow-[0_0_40px_rgba(225,29,72,0.5)] border border-brand/40 relative">
-                <div class="absolute inset-0 rounded-full border border-brand animate-ping opacity-20"></div>
+        <div id="splash-screen" class="fixed inset-0 z-[100] bg-dark flex flex-col items-center justify-center transition-all duration-700 max-w-md mx-auto overflow-hidden">
+        <div class="absolute inset-0" style="background: radial-gradient(circle at center, rgba(225,29,72,0.15) 0%, transparent 60%);"></div>
+        <div id="splash-logo-container" class="relative z-10 flex flex-col items-center" style="animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+            <div class="w-20 h-20 bg-brand/20 rounded-full flex items-center justify-center mb-5 border border-brand/40 relative" style="animation: breathe 2.5s ease-in-out infinite alternate;">
+                <div class="absolute inset-0 rounded-full border border-brand/60" style="animation: gentlePing 2.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
                 <svg class="w-10 h-10 text-brand translate-x-[2px]" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clip-rule="evenodd" /></svg>
             </div>
             <h1 class="text-4xl font-black text-brand tracking-wider drop-shadow-[0_0_20px_rgba(225,29,72,0.6)]">
                 mitaka<span class="text-white">nime</span>
             </h1>
+            <p class="text-gray-400 mt-4 text-[10px] font-bold tracking-[0.2em] uppercase opacity-0" style="animation: fadeIn 0.8s ease-out 0.4s forwards;">
+                Tonton 19 Juta Anime Gratis!
+            </p>
         </div>
+        <div class="absolute bottom-16 w-48 h-1 bg-white/10 rounded-full overflow-hidden z-10 opacity-0" style="animation: fadeIn 0.8s ease-out 0.6s forwards;">
+            <div class="h-full bg-brand rounded-full shadow-[0_0_10px_rgba(225,29,72,0.8)]" style="animation: loadingBar 1.2s ease-in-out forwards;"></div>
+        </div>
+    </div>
         <p class="text-gray-400 mt-8 text-[10px] font-bold tracking-[0.2em] uppercase relative z-10 opacity-80">
             Tonton 19 Juta Anime Gratis di Mitaka!
         </p>
