@@ -734,28 +734,28 @@
                     container.innerHTML = cleanList.map(group => {
                         const groupId = group.startWith === '#' ? 'simbol' : group.startWith;
                         return `
-                        <div id="az-group-${groupId}" class="scroll-mt-20" style="margin-bottom: 50px;">
-                            <div class="sticky z-20 flex items-center justify-between bg-dark/95 backdrop-blur-xl border-y border-white/5 shadow-lg" style="top: 64px; margin-bottom: 20px; margin-left: -20px; margin-right: -20px; padding-left: 20px; padding-right: 20px; padding-top: 14px; padding-bottom: 14px;">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-10 h-10 rounded-xl bg-brand/10 border border-brand/30 flex items-center justify-center shadow-[0_0_15px_rgba(225,29,72,0.3)]">
-                                        <h3 class="text-2xl font-black text-brand">${group.startWith}</h3>
+                        <div id="az-group-${groupId}" class="scroll-mt-20" style="margin-bottom: 40px;">
+                            <div class="sticky z-20 flex items-center justify-between backdrop-blur-xl border-y border-white/5 shadow-sm" style="background-color: rgba(10, 15, 28, 0.95); top: 64px; margin-bottom: 16px; margin-left: -20px; margin-right: -20px; padding: 12px 20px;">
+                                <div style="display: flex; align-items: center; gap: 16px;">
+                                    <div style="width: 38px; height: 38px; border-radius: 12px; background-color: rgba(225, 29, 72, 0.1); border: 1px solid rgba(225, 29, 72, 0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 0 15px rgba(225,29,72,0.2);">
+                                        <h3 style="font-size: 20px; font-weight: 900; color: #e11d48; margin: 0; line-height: 1;">${group.startWith}</h3>
                                     </div>
-                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">
+                                    <span style="font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.1em;">
                                         ${group.animeList.length} Judul
                                     </span>
                                 </div>
                             </div>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 ${group.animeList.map(a => `
-                                    <a href="/anime/${a.animeId}" class="relative bg-card/30 backdrop-blur-sm border border-white/5 p-3 sm:p-4 rounded-2xl flex justify-between items-center group shadow-sm hover:shadow-[0_10px_30px_rgba(225,29,72,0.2)] hover:bg-brand/10 hover:border-brand/40 transition-all duration-300 active:scale-[0.98] overflow-hidden">
+                                    <a href="/anime/${a.animeId}" class="relative bg-card/40 hover:bg-brand/10 border border-white/5 hover:border-brand/40 transition-all duration-300 group flex items-center justify-between shadow-sm hover:shadow-[0_8px_25px_rgba(225,29,72,0.15)] active:scale-[0.98] overflow-hidden" style="border-radius: 14px; padding: 12px 16px;">
                                         <div class="absolute left-0 top-0 bottom-0 w-1 bg-brand opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                        <div class="flex items-center gap-3 sm:gap-4 w-full pr-4 relative z-10">
-                                            <div class="w-9 h-9 rounded-full bg-black/50 flex items-center justify-center shrink-0 group-hover:bg-brand group-hover:text-white text-gray-500 transition-colors border border-white/5 group-hover:border-brand/50 shadow-inner">
-                                                <svg class="w-4 h-4 translate-x-[1px]" fill="currentColor" viewBox="0 0 20 20"><path d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z"></path></svg>
+                                        <div style="display: flex; align-items: center; gap: 14px; width: 100%; padding-right: 16px; position: relative; z-index: 10;">
+                                            <div class="group-hover:bg-brand group-hover:text-white transition-colors" style="width: 34px; height: 34px; border-radius: 50%; background-color: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #6b7280;">
+                                                <svg width="14" height="14" fill="currentColor" viewBox="0 0 20 20" style="transform: translateX(1px);"><path d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z"></path></svg>
                                             </div>
-                                            <span class="text-xs sm:text-sm font-bold text-gray-300 group-hover:text-white line-clamp-2 leading-snug drop-shadow-sm">${a.title}</span>
+                                            <span class="text-[13px] font-bold text-gray-300 group-hover:text-white line-clamp-2 leading-snug drop-shadow-sm">${a.title}</span>
                                         </div>
-                                        <svg class="w-5 h-5 text-gray-600 group-hover:text-brand shrink-0 transition-transform duration-300 group-hover:translate-x-1 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                        <svg class="text-gray-600 group-hover:text-brand transition-transform duration-300 group-hover:translate-x-1 relative z-10" style="width: 18px; height: 18px; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
                                     </a>
                                 `).join('')}
                             </div>
