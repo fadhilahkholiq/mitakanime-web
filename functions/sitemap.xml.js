@@ -3,7 +3,7 @@ export async function onRequest({ request }) {
     const baseUrl = url.origin; 
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
     xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-    const staticPages = ['/home', '/ongoing', '/jadwal', '/katalog', '/genre'];
+    const staticPages = ['/home', '/az', '/ongoing', '/jadwal', '/katalog', '/genre', '/genre/action', '/genre/adventure', '/genre/comedy', '/genre/demons', '/genre/drama', '/genre/ecchi', '/genre/fantasy', '/genre/game', '/genre/harem', '/genre/historical', '/genre/horror', '/genre/josei', '/genre/magic', '/genre/martial-arts', '/genre/mecha', '/genre/military', '/genre/music', '/genre/mystery', '/genre/psychological', '/genre/parody', '/genre/police', '/genre/romance', '/genre/samurai', '/genre/school', '/genre/sci-fi', '/genre/seinen', '/genre/shoujo', '/genre/shoujo-ai', '/genre/shounen', '/genre/slice-of-life', '/genre/sports', '/genre/space', '/genre/super-power', '/genre/supernatural', '/genre/thriller', '/genre/vampire'];
     for (const page of staticPages) {
         xml += `  <url>\n`;
         xml += `    <loc>${baseUrl}${page}</loc>\n`;
