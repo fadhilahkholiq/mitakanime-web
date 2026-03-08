@@ -612,7 +612,7 @@
                     heroSection.innerHTML = heroAnimes.map((heroAnime, index) => `
                         <div class="min-w-full flex-shrink-0 snap-center relative w-full h-full group overflow-hidden" style="height: 480px;">
                             <div class="absolute inset-0 z-0" style="-webkit-mask-image: linear-gradient(to top, transparent 0%, black 70%); mask-image: linear-gradient(to top, transparent 0%, black 70%);">
-                                <img src="${heroAnime.poster}" class="absolute inset-0 w-full h-full object-cover" style="filter: blur(1px); transform: scale(1.2); opacity: 0.35;">
+                                <img src="${heroAnime.poster}" class="absolute inset-0 w-full h-full object-cover" style="filter: blur(4px); transform: scale(1.2); opacity: 0.35;">
                                 <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(10,15,28,1) 0%, rgba(10,15,28,0.5) 40%, transparent 100%);"></div>
                             </div>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pt-8 px-5 z-10" style="padding-bottom: 90px;">
@@ -924,7 +924,7 @@
                     <div class="p-5 pt-5 relative z-10">
                         <div class="flex justify-between items-start gap-3">
                             <div class="flex-1 min-w-0">
-                                <h2 class="text-base font-bold text-white leading-tight drop-shadow-md">${anime.title}</h2>
+                                <h2 class="text-lg font-bold text-white leading-tight drop-shadow-md">${anime.title}</h2>
                                 <p class="text-xs text-brand font-bold tracking-widest uppercase mt-1 opacity-90">Subtitle Indonesia</p>
                             </div>  
                             <button onclick="toggleBookmark('${animeId}', '${anime.title.replace(/'/g, "\\'")}', '${anime.poster}', '${anime.score || ''}')" class="shrink-0 bg-card/80 backdrop-blur border border-white/10 p-3 rounded-full shadow-lg active:scale-90 transition-transform group">
