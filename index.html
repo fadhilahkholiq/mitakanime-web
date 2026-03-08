@@ -1415,7 +1415,7 @@
                     wrapper.innerHTML = `<iframe src="${realUrl}" class="absolute inset-0 w-full h-full z-10 rounded-xl" allowfullscreen allow="autoplay"></iframe>`;
                     wrapper.onclick = null;
                     wrapper.classList.remove('cursor-pointer');
-                    toggleServerModal(); // <--- TUTUP LACI SETELAH KLIK
+                    toggleServerModal();
                 } else {
                     throw new Error("URL Kosong");
                 }
