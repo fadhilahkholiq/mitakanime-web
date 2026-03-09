@@ -343,6 +343,17 @@
   </div>
   <script>
     const BASE_URL = 'https://api.mitaka.mom/anime';
+    async function apiFetch(endpoint) {
+      try {
+        const url = endpoint.startsWith('http') ? endpoint : `${BASE_URL}${endpoint}`;
+        const res = await fetch(url);
+        const result = await res.json();
+        return (result.status === 'success' || result.ok) ? result : null;
+      } catch (error) {
+        console.error(`Error fetching:`, error);
+        return null;
+      }
+    }
     document.addEventListener('click', e => {
       const a = e.target.closest('a');
       if (a) {
@@ -523,110 +534,128 @@
       document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active'));
       const btnBack = document.getElementById('btn-back');
       const headerTitle = document.getElementById('header-title');
+      const searchForm = document.getElementById('search-form');
+      const btnSearchMobile = document.getElementById('btn-search-mobile');
+      const mobileSearchBar = document.getElementById('mobile-search-bar');
       document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.classList.replace('text-brand', 'text-gray-500');
-        if(btn.querySelector('div')) {
-          btn.querySelector('div').classList.remove('bg-brand/20', 'shadow-[0_0_10px_rgba(225,29,72,0.3)]');
-        }
+        const iconDiv = btn.querySelector('div');
+        if(iconDiv) iconDiv.classList.remove('bg-brand/20', 'shadow-[0_0_10px_rgba(225,29,72,0.3)]');
       });
       const isTopLevel = ['home', 'jadwal', 'genre', 'katalog', 'bookmark'].includes(route) && !paramId;
       if (isTopLevel) {
         btnBack.classList.add('hidden');
-        document.getElementById('search-form').classList.replace('hidden', '[@media(min-width:400px)]:flex');
-        document.getElementById('btn-search-mobile').classList.remove('hidden');
+        searchForm.classList.replace('hidden', '[@media(min-width:400px)]:flex');
+        btnSearchMobile.classList.remove('hidden');
+        
         const navBtn = document.getElementById(`nav-${route}`);
         if(navBtn) {
           navBtn.classList.replace('text-gray-500', 'text-brand');
-          const iconDiv = navBtn.querySelector('div');
-          iconDiv.classList.add('bg-brand/20', 'shadow-[0_0_10px_rgba(225,29,72,0.3)]');
-        }
-        if (route === 'home') {
-          document.getElementById('view-home').classList.add('active');
-          headerTitle.innerHTML = 'mitaka<span class="text-white">nime</span>';
-          updateSEO('Mitaka Anime - Home', 'Tonton dan download 19 juta anime ongoing maupun tamat ber-subtitle Indonesia gratis. Lengkap dengan link download dan streaming HD setiap episode.');
-          fetchHome();
-        } else if (route === 'jadwal') {
-          document.getElementById('view-jadwal').classList.add('active');
-          headerTitle.innerHTML = 'mitaka<span class="text-white">nime</span>';
-          updateSEO('Jadwal Rilis Anime', 'Cek jadwal tayang anime kesayanganmu di Mitaka, dari Senin-Sabtu selalu ada.');
-          fetchJadwal();
-        } else if (route === 'genre') {
-          document.getElementById('view-genre').classList.add('active');
-          headerTitle.innerHTML = 'mitaka<span class="text-white">nime</span>';
-          updateSEO('Daftar Genre Anime', 'Jelajahi berbagai genre anime yang ada di Mitaka. Mulai dari action, comedy, romance, dan lainnya.');
-          fetchGenreList();
-        } else if (route === 'katalog') {
-          document.getElementById('view-katalog').classList.add('active');
-          headerTitle.innerHTML = 'mitaka<span class="text-white">nime</span>';
-          updateSEO(`Daftar Anime - Halaman ${pageNum}`, 'Daftar lengkap anime tamat (completed) yang bisa ditonton dan diunduh gratis semua episodenya dengan subtitle Indonesia.');
-          fetchKatalog(pageNum);
-        } else if (route === 'bookmark') {
-          document.getElementById('view-bookmark').classList.add('active');
-          headerTitle.innerHTML = 'mitaka<span class="text-white">nime</span>';
-          updateSEO('Bookmark', 'Daftar anime yang kamu simpan di penyimpanan atau sesi lokal. Bookmark tidak bisa dilihat orang lain.');
-          fetchBookmarks();
+          navBtn.querySelector('div').classList.add('bg-brand/20', 'shadow-[0_0_10px_rgba(225,29,72,0.3)]');
         }
       } else {
         btnBack.classList.remove('hidden');
-        document.getElementById('search-form').classList.replace('[@media(min-width:400px)]:flex', 'hidden');
-        document.getElementById('btn-search-mobile').classList.add('hidden');
-        document.getElementById('mobile-search-bar').classList.add('hidden');
-        if (route === 'ongoing') {
+        searchForm.classList.replace('[@media(min-width:400px)]:flex', 'hidden');
+        btnSearchMobile.classList.add('hidden');
+        mobileSearchBar.classList.add('hidden');
+      }
+      switch (route) {
+        case 'home':
+          document.getElementById('view-home').classList.add('active');
+          headerTitle.innerHTML = 'mitaka<span class="text-white">nime</span>';
+          updateSEO('Mitaka Anime - Home', 'Tonton dan download 19 juta anime ongoing maupun tamat ber-subtitle Indonesia gratis.');
+          fetchHome();
+          break;
+        case 'jadwal':
+          document.getElementById('view-jadwal').classList.add('active');
+          headerTitle.innerHTML = 'mitaka<span class="text-white">nime</span>';
+          updateSEO('Jadwal Rilis Anime', 'Cek jadwal tayang anime kesayanganmu di Mitaka.');
+          fetchJadwal();
+          break;
+        case 'genre':
+          if (paramId) {
+            document.getElementById('view-list').classList.add('active');
+            headerTitle.innerText = 'Genre';
+            document.getElementById('list-title').innerHTML = `<svg class="w-5 h-5 text-brand inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg> Genre <span class="text-white capitalize">${paramId.replace('-', ' ')}</span>`;
+            updateSEO(`Genre ${paramId} - Halaman ${pageNum}`, `Daftar anime genre ${paramId}.`);
+            fetchList(`${BASE_URL}/genre/${paramId}?page=${pageNum}`, `/genre/${paramId}`);
+          } else {
+            document.getElementById('view-genre').classList.add('active');
+            headerTitle.innerHTML = 'mitaka<span class="text-white">nime</span>';
+            updateSEO('Daftar Genre Anime', 'Jelajahi berbagai genre anime yang ada di Mitaka.');
+            fetchGenreList();
+          }
+          break;
+        case 'katalog':
+          document.getElementById('view-katalog').classList.add('active');
+          headerTitle.innerHTML = 'mitaka<span class="text-white">nime</span>';
+          updateSEO(`Daftar Anime - Halaman ${pageNum}`, 'Daftar lengkap anime tamat (completed).');
+          fetchKatalog(pageNum);
+          break;
+        case 'bookmark':
+          document.getElementById('view-bookmark').classList.add('active');
+          headerTitle.innerHTML = 'mitaka<span class="text-white">nime</span>';
+          updateSEO('Bookmark', 'Daftar anime yang kamu simpan.');
+          fetchBookmarks();
+          break;
+        case 'ongoing':
           document.getElementById('view-list').classList.add('active');
           headerTitle.innerText = 'Home';
           document.getElementById('list-title').innerHTML = `<svg class="w-5 h-5 text-brand drop-shadow-[0_0_5px_rgba(225,29,72,0.8)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path></svg> Anime <span class="text-white capitalize">Ongoing</span>`;
-          updateSEO(`Anime Sedang Tayang - Halaman ${pageNum}`, 'Daftar anime ongoing subtitle Indonesia yang rilis setiap minggunya di Mitaka.');
+          updateSEO(`Anime Sedang Tayang - Halaman ${pageNum}`, 'Daftar anime ongoing rilis setiap minggu.');
           fetchList(`${BASE_URL}/ongoing-anime?page=${pageNum}`, `/ongoing`);
-        } else if (route === 'search' && paramId) {
-          document.getElementById('view-list').classList.add('active');
-          headerTitle.innerText = 'Pencarian';
-          document.getElementById('list-title').innerHTML = `<svg class="w-5 h-5 text-brand drop-shadow-[0_0_5px_rgba(225,29,72,0.8)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path></svg> Hasil <span class="text-white capitalize">Pencarian</span>`;
-          updateSEO(`Cari: ${decodeURIComponent(paramId)} - Halaman ${pageNum}`, 'Hasil pencarian anime.');
-          fetchList(`${BASE_URL}/search/${paramId}?page=${pageNum}`, `/search/${paramId}`);
-        } else if (route === 'genre' && paramId) {
-          document.getElementById('view-list').classList.add('active');
-          headerTitle.innerText = 'Genre';
-          document.getElementById('list-title').innerHTML = `<svg class="w-5 h-5 text-brand inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg> Genre <span class="text-white capitalize">${paramId.replace('-', ' ')}</span>`;
-          updateSEO(`Genre ${paramId} - Halaman ${pageNum}`, `Daftar ratusan anime dengan genre ${paramId} yang siap download dan tonton di Mitaka.`);
-          fetchList(`${BASE_URL}/genre/${paramId}?page=${pageNum}`, `/genre/${paramId}`);
-        } else if (route === 'anime' && paramId) {
-          document.getElementById('view-detail').classList.add('active');
-          headerTitle.innerText = 'Detail';
-          fetchDetail(paramId);
-        } else if (route === 'episode' && paramId) {
-          document.getElementById('view-episode').classList.add('active');
-          headerTitle.innerText = 'Nonton';
-          fetchEpisode(paramId);
-        } else if (route === 'batch' && paramId) {
-          document.getElementById('view-batch').classList.add('active');
-          headerTitle.innerText = 'Download Batch';
-          fetchBatch(paramId);
-        } else if (route === 'az') {
+          break;
+        case 'search':
+          if (paramId) {
+            document.getElementById('view-list').classList.add('active');
+            headerTitle.innerText = 'Pencarian';
+            document.getElementById('list-title').innerHTML = `<svg class="w-5 h-5 text-brand drop-shadow-[0_0_5px_rgba(225,29,72,0.8)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path></svg> Hasil <span class="text-white capitalize">Pencarian</span>`;
+            updateSEO(`Cari: ${decodeURIComponent(paramId)} - Halaman ${pageNum}`, 'Hasil pencarian anime.');
+            fetchList(`${BASE_URL}/search/${paramId}?page=${pageNum}`, `/search/${paramId}`);
+          }
+          break;
+        case 'anime':
+          if (paramId) {
+            document.getElementById('view-detail').classList.add('active');
+            headerTitle.innerText = 'Detail';
+            fetchDetail(paramId);
+          }
+          break;
+        case 'episode':
+          if (paramId) {
+            document.getElementById('view-episode').classList.add('active');
+            headerTitle.innerText = 'Nonton';
+            fetchEpisode(paramId);
+          }
+          break;
+        case 'batch':
+          if (paramId) {
+            document.getElementById('view-batch').classList.add('active');
+            headerTitle.innerText = 'Download Batch';
+            fetchBatch(paramId);
+          }
+          break;
+        case 'az':
           document.getElementById('view-az').classList.add('active');
           headerTitle.innerText = 'Daftar A-Z';
-          updateSEO('Direktori Anime A-Z - Mitaka Anime', 'Telusuri direktori lengkap ribuan anime berdasarkan abjad dari A sampai Z secara gratis.');
+          updateSEO('Direktori Anime A-Z - Mitaka Anime', 'Telusuri direktori lengkap ribuan anime berdasarkan abjad.');
           fetchAZ();
-        } else if (route === 'dmca') {
+          break;
+        case 'dmca':
           document.getElementById('view-dmca').classList.add('active');
           headerTitle.innerText = 'DMCA';
-          updateSEO('DMCA - Mitaka Anime', 'Pemberitahuan hak cipta dan prosedur DMCA di Mitaka Anime.');
-        } else if (route === 'terms') {
+          updateSEO('DMCA - Mitaka Anime', 'Pemberitahuan hak cipta dan prosedur DMCA.');
+          break;
+        case 'terms':
           document.getElementById('view-terms').classList.add('active');
           headerTitle.innerText = 'Syarat & Ketentuan';
-          updateSEO('Syarat & Ketentuan - Mitaka Anime', 'Syarat dan ketentuan penggunaan layanan Mitaka Anime.');
-        } else {
+          updateSEO('Syarat & Ketentuan - Mitaka Anime', 'Syarat dan ketentuan penggunaan layanan.');
+          break;
+        default:
           window.navigateTo('/home');
           return;
-        }
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-    window.addEventListener('popstate', handleRouting);
-    window.addEventListener('DOMContentLoaded', handleRouting);
-    function renderSkeletonGrid(count) {
-      let html = '';
-      for(let i=0; i<count; i++) html += '<div class="bg-card/50 animate-pulse rounded-xl pb-[140%] border border-white/5"></div>';
-      return html;
     }
     function createAnimeCard(anime, isCompleted = false) {
       const routeId = anime.animeId || anime.slug; 
@@ -742,14 +771,13 @@
       const paginationContainer = document.getElementById('katalog-pagination');
       container.innerHTML = renderSkeletonGrid(6);
       paginationContainer.innerHTML = ''; 
-      try {
-        const res = await fetch(`${BASE_URL}/complete-anime?page=${page}`);
-        const result = await res.json();
-        if (result.status === 'success') {
-          container.innerHTML = result.data.animeList.map(a => createAnimeCard(a, true)).join('');
-          paginationContainer.innerHTML = renderPagination(result.pagination, '/katalog');
-        }
-      } catch (e) { container.innerHTML = '<p class="text-red-500 text-sm col-span-2 text-center">Gagal memuat data.</p>'; }
+      const result = await apiFetch(`/complete-anime?page=${page}`);
+      if (result) {
+        container.innerHTML = result.data.animeList.map(a => createAnimeCard(a, true)).join('');
+        paginationContainer.innerHTML = renderPagination(result.pagination, '/katalog');
+      } else {
+        container.innerHTML = '<p class="text-red-500 text-sm col-span-2 text-center">Gagal memuat data.</p>';
+      }
     }
     async function fetchAZ() {
       const container = document.getElementById('az-container');
@@ -850,103 +878,79 @@
       container.innerHTML = `
         <div class="mb-8 bg-black/20 p-4 rounded-2xl border border-white/5">
           <div class="h-4 w-24 bg-card/50 rounded animate-pulse mb-4"></div>
-          <div class="grid grid-cols-2 gap-4">
-            <div class="bg-card/50 animate-pulse rounded-xl pb-[140%]"></div>
-            <div class="bg-card/50 animate-pulse rounded-xl pb-[140%]"></div>
-          </div>
+          <div class="grid grid-cols-2 gap-4"><div class="bg-card/50 animate-pulse rounded-xl pb-[140%]"></div><div class="bg-card/50 animate-pulse rounded-xl pb-[140%]"></div></div>
         </div>
-        <div class="mb-8 bg-black/20 p-4 rounded-2xl border border-white/5">
-          <div class="h-4 w-24 bg-card/50 rounded animate-pulse mb-4"></div>
-          <div class="grid grid-cols-2 gap-4">
-            <div class="bg-card/50 animate-pulse rounded-xl pb-[140%]"></div>
-            <div class="bg-card/50 animate-pulse rounded-xl pb-[140%]"></div>
-          </div>
-        </div>`;
-      try {
-        const res = await fetch(`${BASE_URL}/schedule`);
-        const result = await res.json();
-        if (result.status === 'success') {
-          container.innerHTML = result.data.map(scheduleDay => `
-            <div class="mb-8 bg-black/20 p-4 rounded-2xl border border-white/5 shadow-inner">
-              <h3 class="text-brand font-bold uppercase tracking-widest text-sm mb-4 border-b border-brand/20 pb-2 inline-block">${scheduleDay.day}</h3>
-              <div class="grid grid-cols-2 gap-4">
-                ${scheduleDay.anime_list.map(a => createAnimeCard(a, false)).join('')}
-              </div>
+      `;
+      const result = await apiFetch('/schedule');
+      if (result) {
+        container.innerHTML = result.data.map(scheduleDay => `
+          <div class="mb-8 bg-black/20 p-4 rounded-2xl border border-white/5 shadow-inner">
+            <h3 class="text-brand font-bold uppercase tracking-widest text-sm mb-4 border-b border-brand/20 pb-2 inline-block">${scheduleDay.day}</h3>
+            <div class="grid grid-cols-2 gap-4">
+              ${scheduleDay.anime_list.map(a => createAnimeCard(a, false)).join('')}
             </div>
-          `).join('');
-        }
-      } catch (e) { container.innerHTML = '<p class="text-red-500 text-sm text-center">Gagal memuat data jadwal.</p>'; }
+          </div>
+        `).join('');
+      } else {
+        container.innerHTML = '<p class="text-red-500 text-sm text-center">Gagal memuat data jadwal.</p>';
+      }
     }
     async function fetchGenreList() {
       const container = document.getElementById('genre-list-container');
       if(container.children.length > 0 && !container.innerHTML.includes('animate-pulse')) return;
-      container.innerHTML = `
-        <div class="h-12 bg-card/50 animate-pulse rounded-xl"></div>
-        <div class="h-12 bg-card/50 animate-pulse rounded-xl"></div>
-        <div class="h-12 bg-card/50 animate-pulse rounded-xl"></div>
-        <div class="h-12 bg-card/50 animate-pulse rounded-xl"></div>
-        <div class="h-12 bg-card/50 animate-pulse rounded-xl"></div>
-        <div class="h-12 bg-card/50 animate-pulse rounded-xl"></div>
-      `;
-      try {
-        const res = await fetch(`${BASE_URL}/genre`);
-        const result = await res.json();
-        if (result.status === 'success') {
-          const genreIcons = {
-            'action': '⚔️',
-            'adventure': '🗺️',
-            'comedy': '😂',
-            'demons': '👿',
-            'drama': '🎭',
-            'ecchi': '💋',
-            'fantasy': '🪄',
-            'game': '🎮',
-            'harem': '💕',
-            'historical': '📜',
-            'horror': '👻',
-            'josei': '👩',
-            'magic': '✨',
-            'martial-arts': '🥋',
-            'mecha': '🤖',
-            'military': '🪖',
-            'music': '🎵',
-            'mystery': '🕵️‍♂️',
-            'psychological': '🧠',
-            'parody': '🤡',
-            'police': '🚓',
-            'romance': '❤️',
-            'samurai': '🗡️',
-            'school': '🏫',
-            'sci-fi': '🚀',
-            'seinen': '👨',
-            'shoujo': '👧',
-            'shoujo-ai': '👭',
-            'shounen': '👦',
-            'slice-of-life': '☕',
-            'sports': '⚽',
-            'space': '🌌',
-            'super-power': '🦸‍♂️',
-            'supernatural': '🔮',
-            'thriller': '😱',
-            'vampire': '🧛'
-          };
-          container.innerHTML = result.data.genreList.map(g => {
-            const icon = genreIcons[g.genreId] || '🎬'; 
-            const displayTitle = g.title || g.genreId.split('-').map(word => 
-              word.charAt(0).toUpperCase() + word.slice(1)
-            ).join(' ');
-            return `
-              <a href="/genre/${g.genreId}" class="bg-card/80 backdrop-blur-sm border border-white/5 p-2.5 rounded-xl flex items-center justify-start gap-3 text-xs font-medium text-gray-300 hover:text-white hover:bg-brand/20 hover:border-brand hover:shadow-[0_5px_15px_rgba(225,29,72,0.4)] transition-all duration-300 active:scale-95 group">
-                <div class="bg-dark/60 w-8 h-8 rounded-lg flex items-center justify-center text-base shadow-inner group-hover:scale-110 transition-transform duration-300 shrink-0">
-                  ${icon}
-                </div>
-                <span class="truncate">${displayTitle}</span>
-              </a>
-            `;
-          }).join('');
-        }
-      } catch (e) { 
-        container.innerHTML = '<p class="text-red-500 text-sm col-span-2 text-center">Gagal memuat daftar genre.</p>'; 
+      container.innerHTML = Array(6).fill('<div class="h-12 bg-card/50 animate-pulse rounded-xl"></div>').join('');
+      const result = await apiFetch('/genre');
+      if (result) {
+        const genreIcons = {
+          'action': '⚔️',
+          'adventure': '🗺️',
+          'comedy': '😂',
+          'demons': '👿',
+          'drama': '🎭',
+          'ecchi': '💋',
+          'fantasy': '🪄',
+          'game': '🎮',
+          'harem': '💕',
+          'historical': '📜',
+          'horror': '👻',
+          'josei': '👩',
+          'magic': '✨',
+          'martial-arts': '🥋',
+          'mecha': '🤖',
+          'military': '🪖',
+          'music': '🎵',
+          'mystery': '🕵️‍♂️',
+          'psychological': '🧠',
+          'parody': '🤡',
+          'police': '🚓',
+          'romance': '❤️',
+          'samurai': '🗡️',
+          'school': '🏫',
+          'sci-fi': '🚀',
+          'seinen': '👨',
+          'shoujo': '👧',
+          'shoujo-ai': '👭',
+          'shounen': '👦',
+          'slice-of-life': '☕',
+          'sports': '⚽',
+          'space': '🌌',
+          'super-power': '🦸‍♂️',
+          'supernatural': '🔮',
+          'thriller': '😱',
+          'vampire': '🧛'
+        };
+        container.innerHTML = result.data.genreList.map(g => {
+          const icon = genreIcons[g.genreId] || '🎬'; 
+          const displayTitle = g.title || g.genreId.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+          return `
+            <a href="/genre/${g.genreId}" class="bg-card/80 backdrop-blur-sm border border-white/5 p-2.5 rounded-xl flex items-center justify-start gap-3 text-xs font-medium text-gray-300 hover:text-white hover:bg-brand/20 hover:border-brand hover:shadow-[0_5px_15px_rgba(225,29,72,0.4)] transition-all duration-300 active:scale-95 group">
+              <div class="bg-dark/60 w-8 h-8 rounded-lg flex items-center justify-center text-base shadow-inner group-hover:scale-110 transition-transform duration-300 shrink-0">${icon}</div>
+              <span class="truncate">${displayTitle}</span>
+            </a>
+          `;
+        }).join('');
+      } else {
+        container.innerHTML = '<p class="text-red-500 text-sm col-span-2 text-center">Gagal memuat daftar genre.</p>';
       }
     }
     function renderEmptyState() {
@@ -963,16 +967,13 @@
       const paginationContainer = document.getElementById('list-pagination');
       container.innerHTML = renderSkeletonGrid(6);
       paginationContainer.innerHTML = '';
-      try {
-        const res = await fetch(apiUrl);
-        const result = await res.json();
-        if (result.status === 'success' && result.data.animeList && result.data.animeList.length > 0) {
-          container.innerHTML = result.data.animeList.map(a => createAnimeCard(a, false)).join('');
-          paginationContainer.innerHTML = renderPagination(result.pagination, hashBase);
-        } else {
-          container.innerHTML = renderEmptyState();
-        }
-      } catch (e) { container.innerHTML = '<p class="text-red-500 text-sm col-span-2 text-center py-10">Terjadi kesalahan koneksi.</p>'; }
+      const result = await apiFetch(apiUrl);
+      if (result && result.data.animeList && result.data.animeList.length > 0) {
+        container.innerHTML = result.data.animeList.map(a => createAnimeCard(a, false)).join('');
+        paginationContainer.innerHTML = renderPagination(result.pagination, hashBase);
+      } else {
+        container.innerHTML = renderEmptyState();
+      }
     }
     window.fetchBookmarks = function() {
       const container = document.getElementById('bookmark-container');
