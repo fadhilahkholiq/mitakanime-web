@@ -846,7 +846,7 @@
                   <a href="/anime/${a.animeId}" class="relative bg-card/40 hover:bg-brand/10 border border-white/5 hover:border-brand/40 transition-all duration-300 group flex items-center justify-between shadow-sm hover:shadow-[0_8px_25px_rgba(225,29,72,0.15)] active:scale-[0.98] overflow-hidden" style="border-radius: 14px; padding: 10px 16px;">
                     <div class="absolute left-0 top-0 bottom-0 w-1 bg-brand opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <div style="display: flex; align-items: center; flex: 1; min-width: 0; padding-right: 12px; position: relative; z-index: 10;">
-                      <span class="text-[12px] font-bold text-gray-300 group-hover:text-white truncate drop-shadow-sm w-full">${a.title}</span>
+                      <span class="text-[12px] text-gray-300 group-hover:text-white truncate drop-shadow-sm w-full">${a.title}</span>
                     </div>
                     <svg class="text-gray-600 group-hover:text-brand transition-transform duration-300 group-hover:translate-x-1 relative z-10" style="width: 16px; height: 16px; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
                   </a>
@@ -889,8 +889,7 @@
     const result = await apiFetch('/genre');
     if (result && result.data && result.data.genreList) {
       const genreIcons = {
-        'action': '⚔️', 'adventure': '🗺️', 'comedy': '😂', 'demons': '👿', 'drama': '🎭', 'ecchi': '💋', 'fantasy': '🪄', 'game': '🎮', 'harem': '💕', 'historical': '📜', 'horror': '👻', 'josei': '👩', 'magic': '✨', 'martial-arts': '🥋', 'mecha': '🤖', 'military': '🪖', 'music': '🎵', 'mystery': '🕵️‍♂️', 'psychological': '🧠', 'parody': '🤡', 'police': '🚓', 'romance': '❤️', 'samurai': '🗡️', 'school': '🏫', 'sci-fi': '🚀', 'seinen': '👨', 'shoujo': '👧', 'shoujo-ai': '👭',
-        'shounen': '👦', 'slice-of-life': '☕', 'sports': '⚽', 'space': '🌌', 'super-power': '🦸‍♂️', 'supernatural': '🔮', 'thriller': '😱', 'vampire': '🧛'
+        'action': '⚔️', 'adventure': '🗺️', 'comedy': '😂', 'demons': '👿', 'drama': '🎭', 'ecchi': '💋', 'fantasy': '🪄', 'game': '🎮', 'harem': '💕', 'historical': '📜', 'horror': '👻', 'josei': '👩', 'magic': '✨', 'martial-arts': '🥋', 'mecha': '🤖', 'military': '🪖', 'music': '🎵', 'mystery': '🕵️‍♂️', 'psychological': '🧠', 'parody': '🤡', 'police': '🚓', 'romance': '❤️', 'samurai': '🗡️', 'school': '🏫', 'sci-fi': '🚀', 'seinen': '👨', 'shoujo': '👧', 'shoujo-ai': '👭', 'shounen': '👦', 'slice-of-life': '☕', 'sports': '⚽', 'space': '🌌', 'super-power': '🦸‍♂️', 'supernatural': '🔮', 'thriller': '😱', 'vampire': '🧛'
       };
       container.innerHTML = result.data.genreList.map(g => {
         const icon = genreIcons[g.genreId] || '🎬';
