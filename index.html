@@ -889,15 +889,8 @@
     const result = await apiFetch('/genre');
     if (result && result.data && result.data.genreList) {
       const genreIcons = {
-        'action': '⚔️', 'adventure': '🗺️', 'comedy': '😂', 'demons': '👿',
-        'drama': '🎭', 'ecchi': '💋', 'fantasy': '🪄', 'game': '🎮',
-        'harem': '💕', 'historical': '📜', 'horror': '👻', 'josei': '👩',
-        'magic': '✨', 'martial-arts': '🥋', 'mecha': '🤖', 'military': '🪖',
-        'music': '🎵', 'mystery': '🕵️‍♂️', 'psychological': '🧠', 'parody': '🤡',
-        'police': '🚓', 'romance': '❤️', 'samurai': '🗡️', 'school': '🏫',
-        'sci-fi': '🚀', 'seinen': '👨', 'shoujo': '👧', 'shoujo-ai': '👭',
-        'shounen': '👦', 'slice-of-life': '☕', 'sports': '⚽', 'space': '🌌',
-        'super-power': '🦸‍♂️', 'supernatural': '🔮', 'thriller': '😱', 'vampire': '🧛'
+        'action': '⚔️', 'adventure': '🗺️', 'comedy': '😂', 'demons': '👿', 'drama': '🎭', 'ecchi': '💋', 'fantasy': '🪄', 'game': '🎮', 'harem': '💕', 'historical': '📜', 'horror': '👻', 'josei': '👩', 'magic': '✨', 'martial-arts': '🥋', 'mecha': '🤖', 'military': '🪖', 'music': '🎵', 'mystery': '🕵️‍♂️', 'psychological': '🧠', 'parody': '🤡', 'police': '🚓', 'romance': '❤️', 'samurai': '🗡️', 'school': '🏫', 'sci-fi': '🚀', 'seinen': '👨', 'shoujo': '👧', 'shoujo-ai': '👭',
+        'shounen': '👦', 'slice-of-life': '☕', 'sports': '⚽', 'space': '🌌', 'super-power': '🦸‍♂️', 'supernatural': '🔮', 'thriller': '😱', 'vampire': '🧛'
       };
       container.innerHTML = result.data.genreList.map(g => {
         const icon = genreIcons[g.genreId] || '🎬';
