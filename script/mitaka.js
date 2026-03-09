@@ -932,7 +932,7 @@ async function fetchBatch(batchId) {
       <div class="flex justify-between items-start gap-3">
         <div class="flex-1 min-w-0">
           <h2 class="text-base font-bold text-white leading-tight drop-shadow-md">${ep.title.replace(/\s*\[BATCH\]\s*/gi, '').trim()}</h2>
-          <p class="text-xs text-brand font-bold tracking-widest mt-1 opacity-90">Subtitle Indonesia</p>
+          <p class="text-xs text-brand font-bold tracking-widest mt-1 opacity-90">Batch Subtitle Indonesia</p>
         </div>
       </div>
       ${renderGenreBadges(ep.genreList)}
