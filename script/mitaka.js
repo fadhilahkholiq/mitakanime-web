@@ -911,7 +911,7 @@ async function fetchBatch(batchId) {
   const result = await apiFetch(`/batch/${batchId}`);
   if (!result) return container.innerHTML = '<p class="text-red-500 p-5 text-center">Gagal memuat batch.<br/>Coba refresh halaman!</p>';
   const ep = result.data;
-  updateSEO(`Download ${ep.title}`, `Download ${ep.title} batch resolusi 360p hingga 1080p subtitle Indonesia lengkap dengan beragam pilihan server.`, ep.poster);
+  updateSEO(`Download ${ep.title} Subtitle Indonesia`, `Download ${ep.title} batch resolusi 360p hingga 1080p subtitle Indonesia lengkap dengan beragam pilihan server.`, ep.poster);
   let gridItems = [];
   if (ep.duration) gridItems.push(`<div class="flex flex-col items-center"><svg class="w-4 h-4 text-gray-500 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span class="font-bold text-white line-clamp-1">Uncounted</span></div>`);
   if (ep.episodes) gridItems.push(`<div class="flex flex-col items-center border-l border-white/10"><svg class="w-4 h-4 text-gray-500 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"></path></svg><span class="font-bold text-white line-clamp-1 uppercase">${ep.episodes} Eps</span></div>`);
