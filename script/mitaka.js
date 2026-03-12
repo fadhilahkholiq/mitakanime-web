@@ -680,8 +680,8 @@ async function fetchDetail(animeId) {
   const result = await apiFetch(`/anime/${animeId}`);
   if (!result) return container.innerHTML = '<p class="text-red-500 p-5 text-center">Gagal memuat detail.</p>';
   const anime = result.data;
-  const sinopsisText = anime.synopsis.paragraphs.length > 0 ? anime.synopsis.paragraphs[0].substring(0, 150) + '...' : `Nonton ${anime.title} subtitle Indonesia gratis.`;
-  updateSEO(`${anime.title} - Mitaka Anime`, sinopsisText, anime.poster);
+  const sinopsisText = anime?.synopsis?.paragraphs?.length ? `Download ${anime.title} subtitle Indonesia. ${anime.synopsis.paragraphs[0].substring(0,150)}...` : `Nonton dan download anime ${anime.title} subtitle Indonesia gratis dengan kualitas HD.`;
+  updateSEO(`Download ${anime.title} Subtitle Indonesia - Mitaka Anime`, sinopsisText, anime.poster);
   const bookmarks = JSON.parse(localStorage.getItem('mitaka_bookmarks') || '[]');
   const isBookmarked = bookmarks.some(b => b.animeId === animeId);
   let recommendedHTML = '';
