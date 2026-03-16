@@ -60,6 +60,9 @@
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
+    --color-brand: #e11d48;
+    --color-dark: #0a0f1c;
+    --color-card: #161d2d;
   }
 }
 @layer base {
